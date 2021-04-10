@@ -22,7 +22,7 @@ KF2HUD.Mut
 
 ## Building and Dependancies
 
-All of the ScRN packages are required.
+All of the [ScRN packages](https://github.com/poosh/KF-ScrnBalance) are required.
 
 **EditPackages**
 
