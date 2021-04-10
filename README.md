@@ -1,6 +1,6 @@
 # Killing Floor 2 HUD
 
-![GitHub all releases](https://img.shields.io/github/downloads/Insulting-Pros/KF2HUD/total)
+![GitHub all releases](https://img.shields.io/github/downloads/InsultingPros/KF2HUD/total)
 
 KF 2 HUD and assets for Killing Floor 1. All credits to [Zedek](https://steamcommunity.com/profiles/76561198067265112).
 
