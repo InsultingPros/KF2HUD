@@ -26,6 +26,8 @@ All of the [ScRN packages](https://github.com/poosh/KF-ScrnBalance) are required
 
 **EditPackages**
 
+Use [KFCmdlet and it's batches](https://github.com/InsultingPros/KFCmdlet) for easy compilation.
+
 ```cpp
 EditPackages=ServerPerks
 EditPackages=ServerPerksMut
