@@ -16,6 +16,8 @@ Look for (26, 44, 100) RGB values to change color from blue.
 
 ## Installation
 
+This HUD works on top of [ScrN Balance](https://steamcommunity.com/groups/ScrNBalance/discussions/2/483368526570475472/), so don't forget to set it up.
+
 ```cpp
 KF2HUD.Mut
 ```
