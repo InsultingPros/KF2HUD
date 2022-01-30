@@ -26,8 +26,7 @@ KF2HUD.Mut
 
 All of the [ScRN packages](https://github.com/poosh/KF-ScrnBalance) are required.
 
-
-Use [KFCmdlet and it's batches](https://github.com/InsultingPros/KFCmdlet) for easy compilation.
+Use [KF Compile Tool](https://github.com/InsultingPros/KFCompileTool) for easy compilation.
 
 **EditPackages**
 
