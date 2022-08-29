@@ -13,10 +13,10 @@ static function string GetNameOf( class<Monster> M )
 static function ClientReceive(PlayerController P, optional int Switch, optional PlayerReplicationInfo RelatedPRI_1, optional PlayerReplicationInfo RelatedPRI_2, optional Object OptionalObject)
 {
 	local KF2HUD H;
-	
+
 	if( Class<Monster>(OptionalObject)==None || HudBase(P.myHud)==None || (RelatedPRI_1==None && Switch==1) )
 		return;
-	
+
 	// Change this to the proper class
 	H = KF2HUD(P.myHud);
     if(H != none)

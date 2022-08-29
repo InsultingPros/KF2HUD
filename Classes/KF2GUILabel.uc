@@ -10,18 +10,18 @@ function bool InternalDraw(Canvas canvas)
 	local float AW, AH, AL, AT, SS, TW, TH;
 	local float TempX, TempY;
 	local Font F;
-	
+
 	if (bVisible)
 	{
 		AW = ActualWidth();
 		AH = ActualHeight();
 		AL = ActualLeft();
 		AT = ActualTop();
-		
+
 		SS = canvas.ClipY / 1080.0;
 
 		F = Canvas.Font;
-		
+
 		// if (default.bKorean)
 		// 	Canvas.Font = Class'FHLang_Core'.default.KoreanFont;
 		// else
@@ -29,12 +29,12 @@ function bool InternalDraw(Canvas canvas)
 
 		Canvas.FontScaleX = 1.0;
 		Canvas.FontScaleY = 1.0;
-		
+
 		Canvas.TextSize(Caption, TW, TH);
 
 		Canvas.FontScaleX = (AH / TH) * SS;
 		Canvas.FontScaleY = (AH / TH) * SS;
-		
+
 		if (default.bKorean)
 		{
 			Canvas.FontScaleX *= KoreanScale;
@@ -42,7 +42,7 @@ function bool InternalDraw(Canvas canvas)
 		}
 
 		Canvas.TextSize(Caption, TW, TH);
-		
+
 		TempY = (AT + (AH*0.5)) - (TH*0.5);
 
 		if (AlignMode == 0)
@@ -60,7 +60,7 @@ function bool InternalDraw(Canvas canvas)
 		Canvas.FontScaleX = 1.0;
 		Canvas.FontScaleY = 1.0;
 	}
-	
+
 	return true;
 }
 

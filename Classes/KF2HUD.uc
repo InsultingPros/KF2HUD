@@ -93,7 +93,7 @@ simulated function DrawHudPassA (Canvas C)
 {
     DrawStoryHUDInfo(C);
     DrawDoorHealthBars(C);
-	
+
 	//------------------------------
 	// CLASSIC HUD, WHAT IS THIS
 	//------------------------------
@@ -126,7 +126,7 @@ simulated function DrawHudPassA (Canvas C)
         DrawInventory(C);
     if ( ShowDamages > 0 )
         DrawDamage(C);
-		
+
 	//------------------------------
 	// MID-WAVE
 	//------------------------------
@@ -141,7 +141,7 @@ simulated function DrawHudPassA (Canvas C)
 				TriggerBar(WaveIncomingString,"",WaveBeginSound);
 			}
 		}
-		
+
 		// Trader time
 		else
 		{
@@ -170,21 +170,21 @@ simulated function Float DrawTraderSquare(Canvas C, float MX, float MY, float SX
 	local Material ATex;
 
 	SS = C.ClipY / 1080.0;
-	
-	if ( KFGRI.CurrentShop == none ) 
+
+	if ( KFGRI.CurrentShop == none )
 		return 0;
-	
+
 	if ( KFPRI == none || KFPRI.Team == none || KFPRI.bOnlySpectator || PawnOwner == none )
 		return 0;
 
 	WorldPos = PlayerOwner.CalcViewLocation;
-	
+
 	// Get a location
     if ( PawnOwner != none )
         MyLocation = PawnOwner.Location;
     else
         PlayerOwner.PlayerCalcView(dummy, MyLocation, DirPointerRotation);
-	
+
 
 	PointPos = KFGRI.CurrentShop.Location;
 
@@ -193,13 +193,13 @@ simulated function Float DrawTraderSquare(Canvas C, float MX, float MY, float SX
 	// NEGATIVE = IN FRONT
 	lateral = vector(PlayerOwner.GetViewRotation());
 	FrontBehind = lateral dot Normal(MyLocation - PointPos);
-	
+
 	// LEFT OR RIGHT?
 	// POSITIVE = RIGHT
 	// NEGATIVE = LEFT
 	lateral = lateral cross vect(0,0,1);
 	LeftRight = lateral dot Normal(MyLocation - PointPos);
-	
+
 	// Trader is in front of us
 	if (FrontBehind <= 0.0)
 	{
@@ -213,19 +213,19 @@ simulated function Float DrawTraderSquare(Canvas C, float MX, float MY, float SX
 		else
 			PCT = -0.5;
 	}
-	
+
 	ATex = KF2TLSquare.WidgetTexture;
 	SSX = SquareSize;
 	SSY = SquareSize;
 	PPY = TraderBarY;
-	
+
 	// Above or below
 	if (abs(PointPos.Z - MyLocation.Z) >= ArrowMinDist)
 	{
 		// Arrow size
 		SSX = ArrowUp.MaterialUSize();
 		SSY = ArrowUp.MaterialVSize();
-		
+
 		// Above:
 		if (PointPos.Z - myLocation.Z >= ArrowMinDist)
 		{
@@ -238,15 +238,15 @@ simulated function Float DrawTraderSquare(Canvas C, float MX, float MY, float SX
 			PPY += ArrowPad;
 		}
 	}
-	
+
 	PPX = TraderBarX + (PCT * TraderBarWidth);
-	
+
 	HDX = SX + ((PPX - (SSX*0.5)) * KF2TLBase.TextureScale * SS);
 	HDY = SY + ((PPY - (SSY*0.5)) * KF2TLBase.TextureScale * SS);
 	C.SetPos(HDX, HDY);
 	C.DrawColor = KF2TLSquare.Tints[0];
 	C.DrawTile(ATex, SSX * KF2TLBase.TextureScale * SS, SSY * KF2TLBase.TextureScale * SS, 0, 0, ATex.MaterialUSize(), ATex.MaterialVSize());
-	
+
 	return int(VSize(PointPos - MyLocation) / 50);
 }
 
@@ -263,98 +263,98 @@ simulated function DrawKFHUDTextElements(Canvas C)
 
     if( KF_StoryGRI(Level.GRI) != none )
         return;
-	
+
 	//DrawBossBar(C);
-	
+
 	CF = C.Font;
 	C.Font = KF2Font;
 	C.FontScaleX = 1.0;
 	C.FontScaleY = 1.0;
-	
+
 	// Screen scale
 	SS = C.ClipY / 1080.0;
-	
+
 	KS = 1.0;
 	KFF = KF2Font;
 	// if (Class'KF2GUILabel'.default.bKorean)
 	// 	KFF = Class'FHLang_Core'.default.KoreanFont;
-	
+
 	// -- BASE TEXTURE -- //
 	MX = KF2TLBase.WidgetTexture.MaterialUSize() * KF2TLBase.TextureScale * SS;
 	MY = KF2TLBase.WidgetTexture.MaterialVSize() * KF2TLBase.TextureScale * SS;
 	SX = 24.0;
 	SY = 24.0;
-	
+
 	C.SetPos(SX,SY);
 	C.DrawColor = KF2TLBase.Tints[0];
 	C.DrawTile(KF2TLBase.WidgetTexture, MX, MY, 0, 0, KF2TLBase.WidgetTexture.MaterialUSize(), KF2TLBase.WidgetTexture.MaterialVSize());
-	
+
 	// -- RED TRADER LINE -- //
 	C.SetPos(SX,SY);
 	C.DrawColor = KF2TLOverlay.Tints[0];
 	C.DrawTile(KF2TLOverlay.WidgetTexture, MX, MY, 0, 0, KF2TLOverlay.WidgetTexture.MaterialUSize(), KF2TLOverlay.WidgetTexture.MaterialVSize());
-	
+
 	// -- DRAW THE TRADER SQUARE -- //
 	TraderDist = DrawTraderSquare(C, MX, MY, SX, SY);
-	
+
 	// -- SCANLINE -- //
 	C.SetPos(SX,SY);
 	C.DrawColor = KF2TLScan.Tints[0];
 	C.DrawTile(KF2TLScan.WidgetTexture, MX, MY, 0, 0, KF2TLScan.WidgetTexture.MaterialUSize(), KF2TLScan.WidgetTexture.MaterialVSize());
-	
+
 	// -- "TRADER" -- //
 	C.FontScaleX = TraderTextScale * SS * KS;
 	C.FontScaleY = TraderTextScale * SS * KS;
 	C.Font = KFF;
 	C.TextSize(default.KF2TraderString, FX, FY);
-	
+
 	HDX = SX + (TraderTextX * KF2TLBase.TextureScale * SS);
 	HDY = SY + (TraderTextY * KF2TLBase.TextureScale * SS);
 	C.SetPos(HDX, HDY-(FY*0.5));
 	C.DrawColor = KF2TextColor;
 	C.DrawText(default.KF2TraderString);
-	
+
 	// -- TRADER DISTANCE -- //
 	S = string(TraderDist)$"M";
 	C.FontScaleX = TraderDistScale * SS;
 	C.FontScaleY = TraderDistScale * SS;
 	C.Font = KF2Font;
 	C.TextSize(S, FX, FY);
-	
+
 	HDX = SX + (TraderDistX * KF2TLBase.TextureScale * SS);
 	HDY = SY + (TraderDistY * KF2TLBase.TextureScale * SS);
 	C.SetPos(HDX-FX, HDY-(FY*0.5));
 	C.DrawColor = KF2TextColor;
 	C.DrawText(S);
-	
+
 	// -- "WAVE" -- //
 	C.FontScaleX = WaveTextScale * SS * KS;
 	C.FontScaleY = WaveTextScale * SS * KS;
 	C.Font = KFF;
 	C.TextSize(default.KF2WaveString, FX, FY);
-	
+
 	HDX = SX + (WaveTextX * KF2TLBase.TextureScale * SS);
 	HDY = SY + (WaveTextY * KF2TLBase.TextureScale * SS);
 	C.SetPos(HDX, HDY-(FY*0.5));
 	C.DrawColor = KF2TextColor;
 	C.DrawText(default.KF2WaveString);
-	
+
 	// -- CURRENT WAVE -- //
 	S = string(KFGRI.WaveNumber+1)$"/"$string(KFGRI.FinalWave);
 	if (KFGRI.WaveNumber+1 > KFGRI.FinalWave)
 		S = "FINAL";
-		
+
 	C.FontScaleX = WaveCountScale * SS;
 	C.FontScaleY = WaveCountScale * SS;
 	C.Font = KF2Font;
 	C.TextSize(S, FX, FY);
-	
+
 	HDX = SX + (WaveCountX * KF2TLBase.TextureScale * SS);
 	HDY = SY + (WaveCountY * KF2TLBase.TextureScale * SS);
 	C.SetPos(HDX-FX, HDY-(FY*0.5));
 	C.DrawColor = KF2TextColor;
 	C.DrawText(S);
-	
+
 	// TRADER TIME - WAVE NOT IN PROGRESS
 	if( !KFGRI.bWaveInProgress  )
 	{
@@ -364,7 +364,7 @@ simulated function DrawKFHUDTextElements(Canvas C)
 		C.SetPos(HDX, HDY);
 		C.DrawColor = KF2TextColor;
 		C.DrawTile(KF2TLClock.WidgetTexture, ClockSize * KF2TLBase.TextureScale * SS, ClockSize * KF2TLBase.TextureScale * SS, 0, 0, KF2TLClock.WidgetTexture.MaterialUSize(), KF2TLClock.WidgetTexture.MaterialVSize());
-		
+
 		// -- TRADER TIME -- //
 		Min = KFGRI.TimeToNextWave / 60;
         NumZombies = KFGRI.TimeToNextWave - (Min * 60);
@@ -380,7 +380,7 @@ simulated function DrawKFHUDTextElements(Canvas C)
 		C.DrawColor = KF2TextColor;
 		C.DrawText(S);
 	}
-	
+
 	// WAVE TIME
 	else
 	{
@@ -390,7 +390,7 @@ simulated function DrawKFHUDTextElements(Canvas C)
 		C.SetPos(HDX, HDY);
 		C.DrawColor = KF2TextColor;
 		C.DrawTile(KF2TLZed.WidgetTexture, ZedSize * KF2TLBase.TextureScale * SS, ZedSize * KF2TLBase.TextureScale * SS, 0, 0, KF2TLZed.WidgetTexture.MaterialUSize(), KF2TLZed.WidgetTexture.MaterialVSize());
-		
+
 		// -- ZED COUNT -- //
 		S = string(KFGRI.MaxMonsters);
 		if (KFGRI.WaveNumber+1 > KFGRI.FinalWave)
@@ -406,7 +406,7 @@ simulated function DrawKFHUDTextElements(Canvas C)
 		C.DrawColor = KF2TextColor;
 		C.DrawText(S);
 	}
-	
+
     C.FontScaleX = 1;
     C.FontScaleY = 1;
 	C.Font = CF;
@@ -430,27 +430,27 @@ simulated function DrawOldHudItems(Canvas C)
 	local Syringe S;
 	local Font CF;
 	local Class<SRVeterancyTypes> SV;
-		
+
 	if (Owner != None && PlayerController(Owner) != None && KFPlayerController(PlayerController(Owner)).bShopping)
 		return;
-		
+
 	// Normal HUD
 	if (DrawDifferentHUD(C))
 	{
 		// Draw mid-wave message
 		if (ShouldDrawFancy() && MidWaveState > 0)
 			DrawFancyBar(C);
-			
+
 		return;
 	}
-	
+
 	CF = C.Font;
 	C.FontScaleX = 1.0;
 	C.FontScaleY = 1.0;
-	
+
 	// Screen scale
 	SS = C.ClipY / 1080.0;
-	
+
 	//----------------------------------------------------------------------------------------------------------
 	//
 	// B O T T O M   L E F T   P A R T   O F   T H E   H U D
@@ -462,52 +462,52 @@ simulated function DrawOldHudItems(Canvas C)
 	MY = KF2BLBase.WidgetTexture.MaterialVSize() * KF2BLBase.TextureScale * SS;
 	SX = 24.0;
 	SY = C.ClipY-24.0-MY;
-	
+
 	// CONSOLE MESSAGE LOCATION
     ConsoleMessagePosX = 48.0 / C.ClipX;
     ConsoleMessagePosY = (SY - (64.0*SS)) / C.ClipY;
-	
+
 	C.SetPos(SX,SY);
 	C.DrawColor = KF2BLBase.Tints[0];
 	C.DrawTile(KF2BLBase.WidgetTexture, MX, MY, 0, 0, KF2BLBase.WidgetTexture.MaterialUSize(), KF2BLBase.WidgetTexture.MaterialVSize());
-	
+
 	// -- SCANLINE -- //
 	C.SetPos(24.0,C.ClipY-24.0-MY);
 	C.DrawColor = KF2BLScan.Tints[0];
 	C.DrawTile(KF2BLScan.WidgetTexture, MX, MY, 0, 0, KF2BLScan.WidgetTexture.MaterialUSize(), KF2BLScan.WidgetTexture.MaterialVSize());
-	
+
 	// -- HEALTH -- //
 	C.FontScaleX = HUDNumScale * SS;
 	C.FontScaleY = HUDNumScale * SS;
 	C.Font = KF2Font;
 	C.TextSize(string(HealthDigits.Value), FX, FY);
-	
+
 	HDX = SX + (332.0 * KF2BLBase.TextureScale * SS);
 	HDY = SY + (190.0 * KF2BLBase.TextureScale * SS);
 	C.SetPos(HDX, HDY-(FY*0.5));
 	C.DrawColor = KF2TextColor;
 	C.DrawText(string(HealthDigits.Value));
-	
+
 	// -- ARMOR -- //
 	HDX = SX + (332.0 * KF2BLBase.TextureScale * SS);
 	HDY = SY + (124.0 * KF2BLBase.TextureScale * SS);
 	C.SetPos(HDX, HDY-(FY*0.5));
 	C.DrawColor = KF2TextColor;
 	C.DrawText(string(ArmorDigits.Value));
-	
+
 	// -- HEALTH AND ARMOR ICONS -- //
 	HDX = SX + ((HealthIconX - (SmallIconSize*0.5)) * KF2BLBase.TextureScale * SS);
 	HDY = SY + ((HealthIconY - (SmallIconSize*0.5)) * KF2BLBase.TextureScale * SS);
 	C.SetPos(HDX, HDY);
 	C.DrawColor = KF2TextColor;
 	C.DrawTile(KF2HealthIcon.WidgetTexture, SmallIconSize * KF2BLBase.TextureScale * SS, SmallIconSize * KF2BLBase.TextureScale * SS, 0, 0, KF2HealthIcon.WidgetTexture.MaterialUSize(), KF2HealthIcon.WidgetTexture.MaterialVSize());
-	
+
 	HDX = SX + ((ArmorIconX - (SmallIconSize*0.5)) * KF2BLBase.TextureScale * SS);
 	HDY = SY + ((ArmorIconY - (SmallIconSize*0.5)) * KF2BLBase.TextureScale * SS);
 	C.SetPos(HDX, HDY);
 	C.DrawColor = KF2TextColor;
 	C.DrawTile(KF2ArmorIcon.WidgetTexture, SmallIconSize * KF2BLBase.TextureScale * SS, SmallIconSize * KF2BLBase.TextureScale * SS, 0, 0, KF2ArmorIcon.WidgetTexture.MaterialUSize(), KF2ArmorIcon.WidgetTexture.MaterialVSize());
-	
+
 	// -- SYRINGE BAR -- //
 	// Percentage from 0 to 1
 	S = Syringe(PawnOwner.FindInventoryType(class'Syringe'));
@@ -524,7 +524,7 @@ simulated function DrawOldHudItems(Canvas C)
 		C.SetPos(24.0, HDY);
 		C.DrawTile(Texture'KF2BL_syringebar', MX, TotalBarWidth * KF2BLBase.TextureScale * SS, 0, SyringeYBottom - TotalBarWidth, KF2BLOverlay.WidgetTexture.MaterialUSize(), TotalBarWidth);
 	}
-	
+
 	SSX = KF2SyringeIcon.WidgetTexture.MaterialUSize() * KF2SyringeIcon.TextureScale;
 	SSY = KF2SyringeIcon.WidgetTexture.MaterialVSize() * KF2SyringeIcon.TextureScale;
 	HDX = SX + ((SyringeIconX - (SSX*0.5)) * KF2BLBase.TextureScale * SS);
@@ -532,12 +532,12 @@ simulated function DrawOldHudItems(Canvas C)
 	C.SetPos(HDX, HDY);
 	C.DrawColor = KF2SyringeIcon.Tints[0];
 	C.DrawTile(KF2SyringeIcon.WidgetTexture, SSX * KF2BLBase.TextureScale * SS, SSY * KF2BLBase.TextureScale * SS, 0, 0, KF2SyringeIcon.WidgetTexture.MaterialUSize(), KF2SyringeIcon.WidgetTexture.MaterialVSize());
-	
+
 	//-------------------------------------------------------
 	// -- PERK GARBAGE
 	//-------------------------------------------------------
 	SV = Class<SRVeterancyTypes>(KFPlayerReplicationInfo(PawnOwnerPRI).ClientVeteranSkill);
-	
+
 	if (SV != None)
 	{
 		// -- EXPERIENCE BAR -- //
@@ -559,7 +559,7 @@ simulated function DrawOldHudItems(Canvas C)
 			C.DrawColor = KF2SyringeIcon.Tints[0];
 			C.DrawTile(Texture'KF2BL_xpbar', TotalBarWidth * KF2BLBase.TextureScale * SS, MY, XPStartX, 0, XPStartX+TotalBarWidth, KF2BLOverlay.WidgetTexture.MaterialVSize());
 		}
-	
+
 		// -- PERK ICON -- //
 		TempSize = PerkIconSize * KF2BLBase.TextureScale * SS;
 		PerkStartX = default.PerkStartX - (PerkIconSize*0.5);
@@ -569,53 +569,53 @@ simulated function DrawOldHudItems(Canvas C)
 		C.SetPos(SX + (PerkStartX * KF2BLBase.TextureScale * SS), SY + (PerkStartY * KF2BLBase.TextureScale * SS));
 		C.DrawColor = KF2TextColor;
 		C.DrawTile(TempMaterial, TempSize, TempSize, 0, 0, TempMaterial.MaterialUSize(), TempMaterial.MaterialVSize());
-		
+
 		// -- PERK LEVEL -- //
 		C.Font = KF2Font;
 		C.FontScaleX = PerkTextScale * SS;
 		C.FontScaleY = PerkTextScale * SS;
 		C.TextSize(string(MainLevel), FX, FY);
-		
+
 		PerkTextY = default.PerkTextY * KF2BLBase.TextureScale * SS;
 		PerkStartX = default.PerkStartX * KF2BLBase.TextureScale * SS;
-		
+
 		C.SetPos(SX + (PerkStartX - (FX*0.5)), SY + (PerkTextY - (FY*0.5)));
 		C.DrawColor = KF2TextColor;
 		C.DrawText(string(MainLevel));
 	}
-	
+
 	// -- XP OVERLAY -- //
 	C.SetPos(24.0,C.ClipY-24.0-MY);
 	C.DrawColor = KF2BLOverlay.Tints[0];
 	C.DrawTile(KF2BLOverlay.WidgetTexture, MX, MY, 0, 0, KF2BLOverlay.WidgetTexture.MaterialUSize(), KF2BLOverlay.WidgetTexture.MaterialVSize());
-	
+
 	//----------------------------------------------------------------------------------------------------------
 	//
 	// B O T T O M   R I G H T   P A R T   O F   T H E   H U D
 	//
 	//----------------------------------------------------------------------------------------------------------
-	
+
 	// -- SETUP COORDINATES -- //
 	MX = KF2BRBase.WidgetTexture.MaterialUSize() * KF2BLBase.TextureScale * SS;
 	MY = KF2BRBase.WidgetTexture.MaterialVSize() * KF2BLBase.TextureScale * SS;
 	SX = C.ClipX-24.0-MX;
 	SY = C.ClipY-24.0-MY;
-	
+
 	// -- BASE TEXTURE -- //
 	C.SetPos(SX,SY);
 	C.DrawColor = KF2BRBase.Tints[0];
 	C.DrawTile(KF2BRBase.WidgetTexture, MX, MY, 0, 0, KF2BRBase.WidgetTexture.MaterialUSize(), KF2BRBase.WidgetTexture.MaterialVSize());
-	
+
 	// -- SCANLINE -- //
 	C.SetPos(SX,SY);
 	C.DrawColor = KF2BRScan.Tints[0];
 	C.DrawTile(KF2BRScan.WidgetTexture, MX, MY, 0, 0, KF2BRScan.WidgetTexture.MaterialUSize(), KF2BRScan.WidgetTexture.MaterialVSize());
-	
+
 	// -- OVERLAY -- //
 	C.SetPos(SX,SY);
 	C.DrawColor = KF2TextColor;
 	C.DrawTile(KF2BROverlay.WidgetTexture, MX, MY, 0, 0, KF2BROverlay.WidgetTexture.MaterialUSize(), KF2BROverlay.WidgetTexture.MaterialVSize());
-	
+
 	// -- WEAPON NAME -- //
 	if (bDrawWeaponName && OwnerWeaponClass != None)
 	{
@@ -627,7 +627,7 @@ simulated function DrawOldHudItems(Canvas C)
 		C.SetPos((SX + (WeaponNameOffset.X * SS * KF2BLBase.TextureScale)) - FX, (SY + (WeaponNameOffset.Y * SS * KF2BLBase.TextureScale)) - FY);
 		C.DrawText(WS);
 	}
-	
+
 	// -- DOSH TEXT -- //
 	C.FontScaleX = HUDDoshScale * SS;
 	C.FontScaleY = HUDDoshScale * SS;
@@ -636,70 +636,70 @@ simulated function DrawOldHudItems(Canvas C)
 		C.FontScaleX *= 0.8;
 		C.FontScaleY *= 0.8;
 	}
-	
+
 	C.Font = KF2Font;
 	C.TextSize(string(CashDigits.Value), FX, FY);
-	
+
 	HDX = SX + (DoshX * KF2BLBase.TextureScale * SS);
 	HDY = SY + (DoshY * KF2BLBase.TextureScale * SS);
 	C.SetPos(HDX-FX, HDY-(FY*0.5));
 	C.DrawColor = KF2TextColor;
 	C.DrawText(string(CashDigits.Value));
-	
+
 	// -- WEIGHT TEXT -- //
 	WS = int(ScrnPawnOwner.CurrentWeight)$"/"$int(ScrnPawnOwner.MaxCarryWeight);
 	C.FontScaleX = HUDWeightScale * SS;
 	C.FontScaleY = HUDWeightScale * SS;
 	C.Font = KF2Font;
 	C.TextSize(WS, FX, FY);
-	
+
 	HDX = SX + (WeightX * KF2BLBase.TextureScale * SS);
 	HDY = SY + (WeightY * KF2BLBase.TextureScale * SS);
 	C.SetPos(HDX-FX, HDY-(FY*0.5));
 	C.DrawColor = KF2TextColor;
 	C.DrawText(WS);
-	
+
 	// -- GRENADE ICON -- //
 	HDX = SX + ((NadeIconX - (NadeIconSize*0.5)) * KF2BLBase.TextureScale * SS);
 	HDY = SY + ((NadeIconY - (NadeIconSize*0.5)) * KF2BLBase.TextureScale * SS);
 	C.SetPos(HDX, HDY);
 	C.DrawColor = KF2TextColor;
 	C.DrawTile(KF2NadeIcon.WidgetTexture, NadeIconSize * KF2BLBase.TextureScale * SS, NadeIconSize * KF2BLBase.TextureScale * SS, 0, 0, KF2NadeIcon.WidgetTexture.MaterialUSize(), KF2NadeIcon.WidgetTexture.MaterialVSize());
-	
+
 	// -- GRENADE TEXT -- //
 	C.FontScaleX = HUDNadeScale * SS;
 	C.FontScaleY = HUDNadeScale * SS;
-	
+
 	// Over 9 grenades (10 or above)
 	if (GrenadeDigits.Value > 9)
 	{
 		C.FontScaleX *= 0.6;
 		C.FontScaleY *= 0.6;
 	}
-	
+
 	C.Font = KF2Font;
 	C.TextSize(GrenadeDigits.Value, FX, FY);
-	
+
 	HDX = SX + (NadeX * KF2BLBase.TextureScale * SS);
 	HDY = SY + (NadeY * KF2BLBase.TextureScale * SS);
 	C.SetPos(HDX-(FX*0.5), HDY-(FY*0.5));
 	C.DrawColor = KF2TextColor;
 	C.DrawText(GrenadeDigits.Value);
-	
+
 	// -- DOSH ICON -- //
 	HDX = SX + ((DoshIconX - (DoshIconSize*0.5)) * KF2BLBase.TextureScale * SS);
 	HDY = SY + ((DoshIconY - (DoshIconSize*0.5)) * KF2BLBase.TextureScale * SS);
 	C.SetPos(HDX, HDY);
 	C.DrawColor = KF2TextColor;
 	C.DrawTile(KF2DoshIcon.WidgetTexture, DoshIconSize * KF2BLBase.TextureScale * SS, DoshIconSize * KF2BLBase.TextureScale * SS, 0, 0, KF2DoshIcon.WidgetTexture.MaterialUSize(), KF2DoshIcon.WidgetTexture.MaterialVSize());
-			   
+
 	// -- WEIGHT ICON -- //
 	HDX = SX + ((WeightIconX - (DoshIconSize*0.5)) * KF2BLBase.TextureScale * SS);
 	HDY = SY + ((WeightIconY - (DoshIconSize*0.5)) * KF2BLBase.TextureScale * SS);
 	C.SetPos(HDX, HDY);
 	C.DrawColor = KF2TextColor;
 	C.DrawTile(KF2WeightIcon.WidgetTexture, DoshIconSize * KF2BLBase.TextureScale * SS, DoshIconSize * KF2BLBase.TextureScale * SS, 0, 0, KF2WeightIcon.WidgetTexture.MaterialUSize(), KF2WeightIcon.WidgetTexture.MaterialVSize());
-	
+
 	// -- FIRE MODE ICON -- //
 	FMMat = GetFireModeTex();
 	SPCT = FireModeSize / FMMat.MaterialUSize();
@@ -710,7 +710,7 @@ simulated function DrawOldHudItems(Canvas C)
 	C.SetPos(HDX, HDY);
 	C.DrawColor = KF2TextColor;
 	C.DrawTile(FMMat, SSX * KF2BLBase.TextureScale * SS, SSY * KF2BLBase.TextureScale * SS, 0, 0, FMMat.MaterialUSize(), FMMat.MaterialVSize());
-	
+
 	// -- BATTERY BAR -- //
 	SPCT = FlashlightDigits.Value / 100.0;
 	TotalBarWidth = BatteryHeight * SPCT;
@@ -722,7 +722,7 @@ simulated function DrawOldHudItems(Canvas C)
   //Canvas.DrawColor.A = 128; //128
 	C.SetPos(SX, HDY);
 	C.DrawTile(Texture'KF2BR_batterybar', MX, TotalBarWidth * KF2BLBase.TextureScale * SS, 0, BatteryBottom - TotalBarWidth, KF2BLOverlay.WidgetTexture.MaterialUSize(), TotalBarWidth);
-	
+
 	SSX = KF2BatteryIcon.WidgetTexture.MaterialUSize() * KF2BatteryIcon.TextureScale;
 	SSY = KF2BatteryIcon.WidgetTexture.MaterialVSize() * KF2BatteryIcon.TextureScale;
 	HDX = SX + ((BatteryIconX - (SSX*0.5)) * KF2BLBase.TextureScale * SS);
@@ -734,15 +734,15 @@ simulated function DrawOldHudItems(Canvas C)
 	//------------------------------------------------------------------------------------------
 	// WEAPON AMMUNITION
     //------------------------------------------------------------------------------------------
-    if ( OwnerWeaponClass != none ) 
+    if ( OwnerWeaponClass != none )
 	{
-       if ( !OwnerWeaponClass.default.bMeleeWeapon && OwnerWeaponClass.default.bConsumesPhysicalAmmo ) 
+       if ( !OwnerWeaponClass.default.bMeleeWeapon && OwnerWeaponClass.default.bConsumesPhysicalAmmo )
 	   {
 		   // -- ANGLE BETWEEN AMMO -- //
 			C.SetPos(SX,SY);
 			C.DrawColor = KF2BRAngle.Tints[0];
 			C.DrawTile(KF2BRAngle.WidgetTexture, MX, MY, 0, 0, KF2BRAngle.WidgetTexture.MaterialUSize(), KF2BRAngle.WidgetTexture.MaterialVSize());
-		   
+
 		   	// -- MAGAZINE BULLETS -- //
 		   	C.FontScaleX = MagAmmoScale * SS;
 			C.FontScaleY = MagAmmoScale * SS;
@@ -754,7 +754,7 @@ simulated function DrawOldHudItems(Canvas C)
 			C.SetPos(HDX-FX, HDY-(FY*0.5));
 			C.DrawColor = KF2TextColor;
 			C.DrawText(MagAmmo);
-		   
+
 		   // -- RESERVE AMMO -- //
 		   if (PawnOwner != None && PawnOwner.Weapon != None)
 		   {
@@ -771,7 +771,7 @@ simulated function DrawOldHudItems(Canvas C)
 				C.DrawText(WS);
 		   }
        }
-		
+
 		// MELEE WEAPON, DRAW 3 DASHES
 		else
 		{
@@ -781,18 +781,18 @@ simulated function DrawOldHudItems(Canvas C)
 		}
 
         // SECONDARY AMMO
-        if ( (OwnerWeapon != none && OwnerWeapon.bHasSecondaryAmmo) || (bSpectating && CurClipsSecondary > 0) || KFMedicGun(OwnerWeapon) != None || ShowSecondary(OwnerWeapon)) 
+        if ( (OwnerWeapon != none && OwnerWeapon.bHasSecondaryAmmo) || (bSpectating && CurClipsSecondary > 0) || KFMedicGun(OwnerWeapon) != None || ShowSecondary(OwnerWeapon))
 		{
 			// SECONDARY BASE
 			C.SetPos(SX,SY);
 			C.DrawColor = KF2BRBase.Tints[0];
 			C.DrawTile(KF2AltBase.WidgetTexture, MX, MY, 0, 0, KF2AltBase.WidgetTexture.MaterialUSize(), KF2AltBase.WidgetTexture.MaterialVSize());
-			
+
 			// SECONDARY SCANLINE
 			C.SetPos(SX,SY);
 			C.DrawColor = KF2AltScan.Tints[0];
 			C.DrawTile(KF2AltScan.WidgetTexture, MX, MY, 0, 0, KF2AltScan.WidgetTexture.MaterialUSize(), KF2AltScan.WidgetTexture.MaterialVSize());
-			
+
 			// -- SECONDARY ICON -- //
 			FMMat = GetSecondaryTex();
 			HDX = SX + ((AltIconX - (AltIconSize*0.5)) * KF2BLBase.TextureScale * SS);
@@ -800,7 +800,7 @@ simulated function DrawOldHudItems(Canvas C)
 			C.SetPos(HDX, HDY);
 			C.DrawColor = KF2TextColor;
 			C.DrawTile(FMMat, AltIconSize * KF2BLBase.TextureScale * SS, AltIconSize * KF2BLBase.TextureScale * SS, 0, 0, FMMat.MaterialUSize(), FMMat.MaterialVSize());
-			
+
 			// -- SECONDARY TEXT -- //
 		   	C.FontScaleX = AltAmmoScale * SS;
 			C.FontScaleY = AltAmmoScale * SS;
@@ -814,7 +814,7 @@ simulated function DrawOldHudItems(Canvas C)
 			C.DrawText(AltAmmoValue);
         }
     }
-	
+
 	// Draw mid-wave message
 	if (ShouldDrawFancy() && MidWaveState > 0)
 		DrawFancyBar(C);
@@ -842,7 +842,7 @@ simulated function CalculateAmmo()
 
 	MagAmmo = KFWeapon(PawnOwner.Weapon).MagAmmoRemaining;
 	CurClipsPrimary = CurAmmoPrimary - MagAmmo;
-	
+
 	AltAmmoValue = CalculateAltAmmo();
 }
 
@@ -854,10 +854,10 @@ simulated function int CalculateAltAmmo()
 {
 	if ( PawnOwner == None || PawnOwner.Weapon == None || KFWeapon(PawnOwner.Weapon) == none )
 		return 0;
-	
+
 	if (KFMedicGun(OwnerWeapon) != None)
 		return int(KFMedicGun(OwnerWeapon).ChargeBar() * 100.0);
-	
+
 	// Normal secondary ammo
 	if (PawnOwner.Weapon != None)
 		return PawnOwner.Weapon.AmmoAmount(1);
@@ -891,9 +891,9 @@ function DisplayMessages(Canvas C)
     local float XL, YL, XXL, YYL;
 	local Color Blk;
 	local font CF;
-	
+
 	Blk.A = 192;
-	
+
 	CF = C.Font;
 	C.FontScaleX = 1.0;
 	C.FontScaleY = 1.0;
@@ -927,7 +927,7 @@ function DisplayMessages(Canvas C)
     {
         XPos = (0.005 * HudCanvasScale * C.SizeX) + (((1.0 - HudCanvasScale) / 2.0) * C.SizeX);
     }
-	
+
 	C.FontScaleX = (C.ClipY / 1080.0) * ChatFontScale;
 	C.FontScaleY = (C.ClipY / 1080.0) * ChatFontScale;
 
@@ -935,7 +935,7 @@ function DisplayMessages(Canvas C)
   //   	C.Font = Class'FHLang_Core'.default.KoreanFont;
 	// else
     	C.Font = KF2Font;
-	
+
     C.DrawColor = LevelActionFontColor;
 
     C.TextSize ("A", XL, YL);
@@ -969,7 +969,7 @@ function DisplayMessages(Canvas C)
 		{
             C.DrawText(TextMessages[i].Text,false);
 		}
-		
+
 		// SECOND PASS
 		XPos --;
 		YPos --;
@@ -986,10 +986,10 @@ function DisplayMessages(Canvas C)
             DrawSmileyText(TextMessages[i].Text,C,,YYL);
         else
             C.DrawText(TextMessages[i].Text,false);
-		
+
         YPos += (YL+YYL);
     }
-	
+
 	C.FontScaleX = 1.0;
 	C.FontScaleY = 1.0;
 	C.Font = CF;
@@ -1000,20 +1000,20 @@ simulated function DrawMessage( Canvas C, int i, float PosX, float PosY, out flo
 	local float FadeValue;
     local float ScreenX, ScreenY, FSX, FSY;
 	local font F;
-	
+
 	if (bHideWaitMessage && string(LocalMessages[i].Message) ~= WaitingMessageClass)
 	{
 		LocalMessages[i].Drawn = true;
 		return;
 	}
-	
+
 	// Not a pickup message
 	if (LocalMessages[i].Message != Class'PickupMessagePlus')
 	{
 		// Is this marco's kill message? Draw a fancy KF2 message
-		if (string(LocalMessages[i].Message) ~= "FPPKillMessage.FPPKillMessage" 
+		if (string(LocalMessages[i].Message) ~= "FPPKillMessage.FPPKillMessage"
     || string(LocalMessages[i].Message) ~= "MutKillMessage.NKillsMessage"
-    || string(LocalMessages[i].Message) ~= "KFMod.KillsMessage" 
+    || string(LocalMessages[i].Message) ~= "KFMod.KillsMessage"
     || LocalMessages[i].Message == Class'KF2KillMessage')
 		{
 			C.Font = LocalMessages[i].StringFont;
@@ -1022,7 +1022,7 @@ simulated function DrawMessage( Canvas C, int i, float PosX, float PosY, out flo
 			DrawKillMessage(C, i, PosX, PosY, DX, DY);
 			return;
 		}
-		
+
 		// Is this a damage message?
 		if (LocalMessages[i].Message == Class'KF2DamageMessage')
 		{
@@ -1033,7 +1033,7 @@ simulated function DrawMessage( Canvas C, int i, float PosX, float PosY, out flo
 		super.DrawMessage(C, i, PosX, PosY, DX, DY);
 		return;
 	}
-	
+
 
 	// Let's draw a KF2 styled pickup message
 	C.FontScaleX = PickupFontScale * (C.ClipY / 1080.0);
@@ -1044,10 +1044,10 @@ simulated function DrawMessage( Canvas C, int i, float PosX, float PosY, out flo
 	C.DrawColor.G = 0;
 	C.DrawColor.B = 0;
 	C.DrawColor.A = 192;
-	
+
 	if (LocalMessages[i].Message.default.bFadeMessage)
 		C.DrawColor.A = LocalMessages[i].DrawColor.A * ( (LocalMessages[i].EndOfLife - Level.TimeSeconds) /LocalMessages[i].LifeTime);
-	
+
 	GetScreenCoords( PosX, PosY, ScreenX, ScreenY, LocalMessages[i], C );
 	DX = LocalMessages[i].DX / C.ClipX;
     DY = LocalMessages[i].DY / C.ClipY;
@@ -1057,7 +1057,7 @@ simulated function DrawMessage( Canvas C, int i, float PosX, float PosY, out flo
 		LocalMessages[i].Message.static.RenderComplexMessage( C, LocalMessages[i].DX, LocalMessages[i].DY, LocalMessages[i].StringMessage, LocalMessages[i].Switch, LocalMessages[i].RelatedPRI, LocalMessages[i].RelatedPRI2, LocalMessages[i].OptionalObject );
 	else
 		C.DrawTextClipped( LocalMessages[i].StringMessage, false );
-	
+
 	// set the color again
 	if ( !LocalMessages[i].Message.default.bFadeMessage )
 		C.DrawColor = LocalMessages[i].DrawColor;
@@ -1067,7 +1067,7 @@ simulated function DrawMessage( Canvas C, int i, float PosX, float PosY, out flo
 		C.DrawColor = LocalMessages[i].DrawColor;
 		C.DrawColor.A = LocalMessages[i].DrawColor.A * (FadeValue/LocalMessages[i].LifeTime);
 	}
-	
+
 	C.SetPos( ScreenX, ScreenY );
 	if ( LocalMessages[i].Message.default.bComplexString )
 		LocalMessages[i].Message.static.RenderComplexMessage( C, LocalMessages[i].DX, LocalMessages[i].DY, LocalMessages[i].StringMessage, LocalMessages[i].Switch, LocalMessages[i].RelatedPRI, LocalMessages[i].RelatedPRI2, LocalMessages[i].OptionalObject );
@@ -1075,7 +1075,7 @@ simulated function DrawMessage( Canvas C, int i, float PosX, float PosY, out flo
 		C.DrawTextClipped( LocalMessages[i].StringMessage, false );
 
     LocalMessages[i].Drawn = true;
-	
+
 	C.FontScaleX = 1.0;
 	C.FontScaleY = 1.0;
 	C.Font = F;
@@ -1087,56 +1087,56 @@ simulated function DrawKillMessage( Canvas Canvas, int i, float PosX, float PosY
 	local Float SS, TW, TH, FadeValue;
 	local String S;
 	local float DrawX, DrawY, BoxW, BoxH, ISize, Pad;
-	
+
 	if (LocalMessages[i].Drawn)
 		return;
-	
+
 	FadeValue = 1.0;
-	
+
 	if ( LocalMessages[i].Message.default.bFadeMessage )
 	{
 		FadeValue = (LocalMessages[i].EndOfLife - Level.TimeSeconds) / LocalMessages[i].LifeTime;
 		if (FadeValue <= 0.02)
 			return;
 	}
-	
+
 	SS = Canvas.ClipY / 1080.0;
 	S = LocalMessages[i].StringMessage;
-	
+
 	// if (Class'KF2GUILabel'.default.bKorean)
 	// 	Canvas.Font = Class'FHLang_Core'.default.KoreanFont;
 	// else
 		Canvas.Font = KF2Font;
-		
+
 	Canvas.FontScaleX = KillScale * SS * KillDampen;
 	Canvas.FontScaleY = KillScale * SS * KillDampen;
-	
+
 	if (Class'KF2GUILabel'.default.bKorean)
 	{
 		Canvas.FontScaleX *= Class'KF2GUILabel'.default.KoreanScale;
 		Canvas.FontScaleY *= Class'KF2GUILabel'.default.KoreanScale;
 	}
-	
+
 	Canvas.TextSize(S, TW, TH);
-	
+
 	// So now, we need to find out our box coordinates
 	DrawX = Canvas.ClipX * PosX;
 	DrawY = Canvas.ClipY * PosY;
-	
+
 	// Prepare our icon
 	ISize = KillSkullSize * SS * KillDampen;
 	Pad = KillPadding * SS * KillDampen;
-	
+
 	// How big is our box?
 	BoxW = TW + (Pad*3.0) + ISize;
 	BoxH = TH + (Pad*2.0);
-	
+
 	// Now let's draw our box (Top aligned)
 	DrawX -= BoxW;
 	Canvas.SetDrawColor(32, 32, 32, 128 * FadeValue);
 	Canvas.SetPos(DrawX, DrawY);
 	Canvas.DrawTileStretched(KillBG, BoxW, BoxH);
-	
+
 	// Now finally, let's draw our text
 	Canvas.SetPos((DrawX + BoxW) - (TW+Pad), (DrawY + (BoxH*0.5)) - (TH*0.5));
 	// if (bColoredKillMessages)
@@ -1146,19 +1146,19 @@ simulated function DrawKillMessage( Canvas Canvas, int i, float PosX, float PosY
 	// }
 	// else
 		Canvas.SetDrawColor(255, 255, 255, 255 * FadeValue);
-	
+
 	Canvas.DrawTextClipped(S);
-	
+
 	// So now, let's draw our skull (left aligned)
 	Canvas.SetPos(DrawX + Pad, (DrawY + (BoxH*0.5)) - (ISize*0.5));
 	Canvas.SetDrawColor(255, 255, 255, 255 * FadeValue);
 	Canvas.DrawTile(SkullIcon, ISize, ISize, 0, 0, SkullIcon.MaterialUSize(), SkullIcon.MaterialVSize());
-	
+
 	Canvas.FontScaleX = 1.0;
 	Canvas.FontScaleY = 1.0;
-	
+
 	LocalMessages[i].Drawn = true;
-	
+
 	DY = (BoxH + Pad) / Canvas.ClipY;
 }
 
@@ -1168,42 +1168,42 @@ simulated function DrawDamageMessage( Canvas Canvas, int i, float PosX, float Po
 	local Float SS, TW, TH, FadeValue;
 	local String S;
 	local float DrawX, DrawY;
-	
+
 	if (LocalMessages[i].Drawn)
 		return;
-	
+
 	FadeValue = 1.0;
-	
+
 	if ( LocalMessages[i].Message.default.bFadeMessage )
 	{
 		FadeValue = (LocalMessages[i].EndOfLife - Level.TimeSeconds) / LocalMessages[i].LifeTime;
 		if (FadeValue <= 0.02)
 			return;
 	}
-	
+
 	SS = Canvas.ClipY / 1080.0;
 	S = LocalMessages[i].StringMessage;
-	
+
 	Canvas.Font = KF2Font;
 	Canvas.FontScaleX = DamageScale * SS;
 	Canvas.FontScaleY = DamageScale * SS;
 	Canvas.TextSize(S, TW, TH);
-	
+
 	// So now, we need to find out our box coordinates
 	DrawX = Canvas.ClipX * PosX;
 	DrawY = Canvas.ClipY * PosY;
-	
+
 	// Now finally, let's draw our text
 	Canvas.SetPos(Canvas.ClipX * PosX, Canvas.ClipY * PosY);
 	Canvas.DrawColor = LocalMessages[i].DrawColor;
 	Canvas.DrawColor.A  = LocalMessages[i].DrawColor.A * FadeValue;
 	Canvas.DrawText(S);
-	
+
 	Canvas.FontScaleX = 1.0;
 	Canvas.FontScaleY = 1.0;
-	
+
 	LocalMessages[i].Drawn = true;
-	
+
 	DY = (TH + (4.0*SS)) / Canvas.ClipY;
 }
 
@@ -1227,7 +1227,7 @@ function  bool UpdateDamageMessage(Object OptionalObject, PlayerReplicationInfo 
 			return true;
 		}
 	}
-	
+
 	return false;
 }
 
@@ -1251,7 +1251,7 @@ function bool UpdateCustomKillMessage(Object OptionalObject,PlayerReplicationInf
 			return true;
 		}
 	}
-	
+
 	return false;
 }
 
@@ -1266,12 +1266,12 @@ function TriggerBar(string TopText, optional string BottomText, optional Sound T
 	MidWaveState = 1;
 	TimeCheckLast = Level.TimeSeconds;
 	bPulseIn = true;
-	
+
 	if (BottomText ~= "")
 		WarnStayTime = default.WarnStayTime;
 	else
 		WarnStayTime = default.WarnStayTime + WarnSubTime;
-		
+
 	if (TriggerSound != None && PawnOwner.Controller != None)
 		PlayerController(PawnOwner.Controller).PlaySound(TriggerSound, SLOT_None, 1.0, true, 500000.0, 1.0, false);
 }
@@ -1283,26 +1283,26 @@ function DrawFancyBar(Canvas Canvas)
 	local float BarWidth, locBarHeight, DrawX, DrawY, WBW, LT;
 	local byte WarnAlpha, BarAlpha, TextAlpha;
 	local float TW, TH;
-	
+
 	SS = Canvas.ClipY / 1080.0;
-	
+
 	CenX = Canvas.ClipX*0.5;
 	CenY = Canvas.ClipY*0.5;
-	
+
 	BarAlpha = 255;
-	
+
 	if (MidWaveState == 5 && ((Level.TimeSeconds - TimeCheckLast) / WarnFadeTime) >= 0.95)
 	{
 		MidWaveState = 0.0;
 		return;
 	}
-	
+
 	// Get our icon size and set our state
 	switch (MidWaveState)
 	{
 		case 1:
 			ISize = WarnIconSize * WarnScaleMax;
-			
+
 			// Time check has exceeded pulse time
 			if (Level.TimeSeconds >= TimeCheckLast + WarnPulseTime)
 			{
@@ -1319,29 +1319,29 @@ function DrawFancyBar(Canvas Canvas)
 					bPulseIn = true;
 					WarnPulseCurrent ++;
 				}
-					
+
 				TimeCheckLast = Level.TimeSeconds;
 			}
-			
+
 			Pct = (Level.TimeSeconds - TimeCheckLast) / WarnPulseTime;
 			if (bPulseIn)
 				Pct = 1.0 - Pct;
-				
+
 			WarnAlpha = 255 - byte((WarnFadeAlpha * Pct) * 255);
 		break;
-		
+
 		case 2:
 			Pct = (Level.TimeSeconds - TimeCheckLast) / WarnShrinkTime;
 			ISize = WarnIconSize * (WarnScaleMax - (Pct * (WarnScaleMax - WarnScaleMin)));
 			WarnAlpha = 255;
-			
+
 			if (Level.TimeSeconds >= TimeCheckLast + WarnShrinkTime)
 			{
 				TimeCheckLast = Level.TimeSeconds;
 				MidWaveState ++;
 			}
 		break;
-		
+
 		case 3:
 			ISize = WarnIconSize * WarnScaleMin;
 			if (Level.TimeSeconds >= TimeCheckLast + WarnGrowTime)
@@ -1350,7 +1350,7 @@ function DrawFancyBar(Canvas Canvas)
 				MidWaveState ++;
 			}
 		break;
-		
+
 		case 4:
 			ISize = WarnIconSize * WarnScaleMin;
 			if (Level.TimeSeconds >= TimeCheckLast + WarnStayTime)
@@ -1359,7 +1359,7 @@ function DrawFancyBar(Canvas Canvas)
 				MidWaveState ++;
 			}
 		break;
-		
+
 		case 5:
 			ISize = WarnIconSize * WarnScaleMin;
 			WarnAlpha = 255 * (1.0 - (Level.TimeSeconds - TimeCheckLast) / WarnFadeTime);
@@ -1368,9 +1368,9 @@ function DrawFancyBar(Canvas Canvas)
 				MidWaveState = 0;
 		break;
 	}
-	
+
 	ISize *= SS;
-	
+
 	// Next, set our solid bar size
 	if (MidWaveState == 3)
 	{
@@ -1379,16 +1379,16 @@ function DrawFancyBar(Canvas Canvas)
 	}
 	else
 		BarWidth = WarnBarWidth * SS;
-	
+
 	locBarHeight = ISize;
-	
+
 	// Draw our bar behind all the stuff first
 	if (MidWaveState > 2)
 	{
 		IClip = (WarnClip / 256.0) * ISize;
-		
+
 		WBW = BarWidth - (IClip*2.0);
-		
+
 		if (WBW > 0.0)
 		{
 			DrawX = CenX - (WBW*0.5);
@@ -1401,7 +1401,7 @@ function DrawFancyBar(Canvas Canvas)
 			Canvas.DrawTile(MidSolidTex, WBW, locBarHeight, 0, 0, MidSolidTex.MaterialUSize(), MidSolidTex.MaterialVSize());
 		}
 	}
-	
+
 	// So let's draw our warning symbols
 	// 1 : Pulsing, single in the center
 	// 2 : Shrinking, single in the center
@@ -1416,7 +1416,7 @@ function DrawFancyBar(Canvas Canvas)
     Canvas.DrawColor.B = 100;
 		Canvas.DrawTile(MidWarnTex, ISize, ISize, 0, 0, MidWarnTex.MaterialUSize(), MidWarnTex.MaterialVSize());
 	}
-	
+
 	// Anything else: Draw TWO warning symbols
 	else
 	{
@@ -1428,7 +1428,7 @@ function DrawFancyBar(Canvas Canvas)
     Canvas.DrawColor.G = 44;
     Canvas.DrawColor.B = 100;
 		Canvas.DrawTile(MidWarnTex, ISize, ISize, 0, 0, MidWarnTex.MaterialUSize(), MidWarnTex.MaterialVSize());
-		
+
 		DrawX = (CenX + (BarWidth*0.5)) - ISize;
 		Canvas.SetPos(DrawX, DrawY);
     Canvas.DrawColor.R = 26;
@@ -1436,11 +1436,11 @@ function DrawFancyBar(Canvas Canvas)
     Canvas.DrawColor.B = 100;
 		Canvas.DrawTile(MidWarnTex, ISize, ISize, 0, 0, MidWarnTex.MaterialUSize(), MidWarnTex.MaterialVSize());
 	}
-	
+
 	// DRAW THE TEXT!
 	if (MidWaveState == 4)
 		BarAlpha = 255 * Clamp((Level.TimeSeconds - timeCheckLast) / (WarnStayTime) * 0.2, 0.0, 1.0);
-		
+
 	if (MidWaveState >= 4)
 	{
 		Canvas.SetDrawColor(MidTextColor.R, MidTextColor.G, MidTextColor.B, BarAlpha);
@@ -1454,14 +1454,14 @@ function DrawFancyBar(Canvas Canvas)
 		Canvas.SetPos(CenX - (TW*0.5), CenY - (TH*0.5));
 		Canvas.DrawText(MidHeader);
 	}
-	
+
 	//-----------------------------------------------------//
 	// B O T T O M   B A R
 	//-----------------------------------------------------//
-	
+
 	if (MidSub ~= "")
 		return;
-	
+
 	if (MidWaveState == 4)
 	{
 		// Past the time to show our sub text
@@ -1474,13 +1474,13 @@ function DrawFancyBar(Canvas Canvas)
 			Pct = FClamp((Level.TimeSeconds - WarnSubLast) / WarnSubGrowTime, 0.0, 1.0);
 			BarWidth = WarnSubWidth * SS * Pct;
 			BarAlpha = 255;
-			
+
 			LT = (Level.TimeSeconds - WarnSubLast) + WarnSubGrowTime;
 			if (LT > Level.TimeSeconds)
 				Pct = 0.0;
 			else
 				Pct = Clamp(LT / WarnSubFadeTime, 0.0, 1.0);
-				
+
 			TextAlpha = 255 * Pct;
 		}
 	}
@@ -1489,7 +1489,7 @@ function DrawFancyBar(Canvas Canvas)
 		BarWidth = WarnSubWidth * SS;
 		TextAlpha = BarAlpha;
 	}
-	
+
 	if (MidWaveState >= 4 && BarAlpha > 0)
 	{
 		DrawY = CenY + (locBarHeight*0.5) + (16.0*SS);
@@ -1523,7 +1523,7 @@ function DrawFancyBar(Canvas Canvas)
     Canvas.DrawColor.G = 44;
     Canvas.DrawColor.B = 100;
 		Canvas.DrawTile(MidRightTex, WBW, locBarHeight, 0, 0, MidRightTex.MaterialUSize(), MidRightTex.MaterialVSize());
-		
+
 		// DRAW THE TEXT YO
 		Canvas.SetDrawColor(MidTextColor.R, MidTextColor.G, MidTextColor.B, TextAlpha);
     Canvas.DrawColor.R = 26;
@@ -1536,7 +1536,7 @@ function DrawFancyBar(Canvas Canvas)
 		Canvas.SetPos(CenX - (TW*0.5), CenY - (TH*0.5));
 		Canvas.DrawText(MidSub);
 	}
-	
+
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1550,99 +1550,99 @@ function DrawFancyBar(Canvas Canvas)
 // 	local int l;
 // 	local float Y, H;
 // 	local FunhouseGameReplicationInfo FGRI;
-	
+
 // 	FGRI = FunhouseGameReplicationInfo(Level.GRI);
 // 	if (FGRI == None)
 // 		return;
-	
+
 // 	Y = 24.0 * (Canvas.ClipY / 1080.0);
-	
+
 // 	for (l=0; l<FGRI.ClientBosses.Length; l++)
 // 	{
 // 		H = DrawSingleBoss(FGRI.ClientBosses[l].MenuName, FGRI.ClientBosses[l].Pct, Canvas, Y);
 // 		Y += H;
 // 	}
 // }
-	
+
 function float DrawSingleBoss(string MonName, float Pct, Canvas Canvas, float YStart)
 {
 	local float SS, BW, CW, CenX, CenY, BL, BH;
 	local float NewWidth, Overlap, BSize;
 	local color FinCol;
 	local Font F;
-	
+
 	F = Canvas.Font;
 
 	FinCol.R = byte(Lerp(BossBarGreen.R, BossBarRed.R, Pct));
 	FinCol.G = byte(Lerp(BossBarGreen.G, BossBarRed.G, Pct));
 	FinCol.B = byte(Lerp(BossBarGreen.B, BossBarRed.B, Pct));
 	FinCol.A = 255;
-	
+
 	//-----------------------------------------------------
-	
+
 	SS = Canvas.ClipY / 1080.0;
-	
+
 	// Find our bar width
 	CW = SS * KF2TLBase.WidgetTexture.MaterialUSize() * KF2TLBase.TextureScale;
-	
+
 	BW = Canvas.ClipX - (CW*2.0);
 	BH = BBMid.MaterialVSize() * SS * 0.5;
-	
+
 	// Right bar width
 	NewWidth = BBRight.MaterialUSize() * SS * 0.5;
-	
+
 	// Center position
 	CenX = Canvas.ClipX * 0.5;
 	CenY = YStart;
-	
+
 	// Left box is 96 px
 	Overlap = 96.0 * SS * 0.5;
 	BSize = BBLeft.MaterialUSize() * SS * 0.5;
-	
+
 	// Left part of the bar
 	BL = CenX - (BW*0.5);
 
 	//---------------------------------------------
-	
+
 	// Draw the main bar
 	Canvas.SetPos(BL + Overlap, CenY);
 	Canvas.SetDrawColor(32, 32, 32, 190);
 	Canvas.DrawTile(BBMid, BW - NewWidth - Overlap, BH, 0, 0, BBMid.MaterialUSize(), BBMid.MaterialVSize());
-	
+
 	// Far right part
 	Canvas.DrawTile(BBRight, NewWidth, BH, 0, 0, BBRight.MaterialUSize(), BBRight.MaterialVSize());
-	
+
 	//---------------------------------------------
 
 	// Draw the main bar
 	Canvas.SetPos(BL + Overlap, CenY);
 	Canvas.SetDrawColor(FinCol.R, FinCol.G, FinCol.B, FinCol.A);
 	Canvas.DrawTile(BBMid, (BW - NewWidth - Overlap) * Pct, BH, 0, 0, BBMid.MaterialUSize(), BBMid.MaterialVSize());
-	
+
 	// Far right part
 	Canvas.DrawTile(BBRight, NewWidth, BH, 0, 0, BBRight.MaterialUSize(), BBRight.MaterialVSize());
-	
+
 	//---------------------------------------------
-	
+
 	// Far left bit
 	Canvas.SetDrawColor(255, 255, 255, 255);
 	Canvas.SetPos(BL, CenY);
 	Canvas.SetDrawColor(255, 255, 255, 255);
 	Canvas.DrawTile(BBLeft, BSize, BSize, 0, 0, BBLeft.MaterialUSize(), BBLeft.MaterialVSize());
-	
+
 	// Draw the skull
 	BSize = BBSkullSize * SS;
-	
+
 	CenX = BL + (BBSkullX * 0.5 * SS);
 	CenY += (BBSkullY * 0.5 * SS);
 	CenX -= (BSize*0.5);
 	CenY -= (BSize*0.5);
-	
+
 	Canvas.SetPos(CenX, CenY);
-	
+
 	Canvas.SetDrawColor(255, 255, 255, 255);
 	Canvas.DrawTile(BBSkull, BSize, BSize, 0, 0, BBSkull.MaterialUSize(), BBSkull.MaterialVSize());
-	
+
 	// Draw the Text
 	F = Canvas.Font;
 	Canvas.Font = KF2Font;
@@ -1651,15 +1651,15 @@ function float DrawSingleBoss(string MonName, float Pct, Canvas Canvas, float YS
 	Canvas.SetPos(BL + (BossTextX * 0.5 * SS) + (2*SS), YStart + (BossTextY * 0.5 * SS) + (2*SS));
 	Canvas.SetDrawColor(0, 0, 0, 255);
 	Canvas.DrawText(MonName);
-	
+
 	Canvas.SetPos(BL + (BossTextX * 0.5 * SS), YStart + (BossTextY * 0.5 * SS));
 	Canvas.SetDrawColor(255, 255, 255, 255);
 	Canvas.DrawText(MonName);
-	
+
 	Canvas.FontScaleX = 1.0;
 	Canvas.FontScaleY = 1.0;
 	Canvas.Font = F;
-	
+
 	return BH + (4.0 * SS);
 }
 
@@ -1692,27 +1692,27 @@ simulated function DrawOverheadBar(Canvas C, Pawn P, float ScreenLocX, float Scr
 	local float Dist;
 	local class<SRVeterancyTypes> ThePerk;
 	local int TheLevel;
-	
+
 	Dist = vsize(P.Location - PlayerOwner.CalcViewLocation);
 	if ( Dist <= BarDistMin )
         fZoom = 1.0;
-    else 
+    else
 	{
 		fZoom = 1.0 - ((Dist - BarDistMin) / (BarDistMax - BarDistMin));
         fZoom = 1.0 - (Dist - HealthBarFullVisDist) / (HealthBarCutoffDist - HealthBarFullVisDist);
         if ( fZoom < 0.01 )
             return;
-		
+
 		fZoom = BarScaleMin + (fZoom * (BarScaleMax - BarScaleMin));
     }
-	
+
 	SS = (0.5 + ((C.ClipY / 1080.0) * 0.5)) * fZoom;
-	
+
 	CF = C.Font;
 	C.FontScaleX = PlayerTextScale * SS;
 	C.FontScaleY = PlayerTextScale * SS;
 	C.Font = KF2Font;
-	
+
 	TempY = ScreenLocY;
 	PlayerBarHeight = default.PlayerBarHeight * SS;
 	PlayerBarWidth = default.PlayerBarWidth * SS;
@@ -1726,12 +1726,12 @@ simulated function DrawOverheadBar(Canvas C, Pawn P, float ScreenLocX, float Scr
 		TheLevel = 0;
 	else
 		TheLevel = EnemyPRI.ClientVeteranSkillLevel;
-		
+
 	if (ForcedPerk != None)
 		ThePerk = ForcedPerk;
 	else
 		ThePerk = Class<SRVeterancyTypes>(EnemyPRI.ClientVeteranSkill);
-			
+
 	if ( ClassIsChildOf(ThePerk,Class'SRVeterancyTypes') )
 	{
 		S = string(TheLevel) @ ThePerk.default.VeterancyName;
@@ -1741,100 +1741,100 @@ simulated function DrawOverheadBar(Canvas C, Pawn P, float ScreenLocX, float Scr
 		C.SetPos(LeftX, TempY);
 		C.DrawText(S);
 	}
-	
+
 	//--------------------------------
 	// HEALTH BAR
     //--------------------------------
 	if (P.Health > 0)
 	{
 		TempY -= (2.0*SS) + PlayerBarHeight;
-		
+
 		if (ForcedHealth > 0.0)
 			PValue = ForcedHealth;
 		else
 			PValue = FClamp(P.Health / P.HealthMax, 0, 1);
-		
+
 		// BG
 		C.SetDrawColor(0, 0, 0, BeaconAlpha);
 		C.SetPos(LeftX, TempY);
 		C.DrawTileStretched(WhiteMaterial, PlayerBarWidth, PlayerBarHeight);
-		
+
 		// Overlay
 		C.SetDrawColor(92, 172, 198, BeaconAlpha);
 		C.SetPos(LeftX, TempY);
 		C.DrawTileStretched(WhiteMaterial, PlayerBarWidth * PValue, PlayerBarHeight);
 	}
-	
+
 	MidY = TempY - (1.0*SS);
-	
+
 	//--------------------------------
 	// ARMOR BAR
     //--------------------------------
-	
+
 	TempY -= (2.0*SS) + PlayerBarHeight;
-	
+
 	// BG
 	C.SetDrawColor(0, 0, 0, BeaconAlpha);
 	C.SetPos(LeftX, TempY);
 	C.DrawTileStretched(WhiteMaterial, PlayerBarWidth, PlayerBarHeight);
-	
+
 	if ( P.ShieldStrength > 0 || ForcedShield > 0.0 )
 	{
 		if (ForcedShield > 0.0)
 			PValue = ForcedShield;
 		else
 			PValue = FClamp(P.ShieldStrength / 100.f, 0, 3);
-			
+
 		// Overlay
 		C.SetDrawColor(3, 9, 182, BeaconAlpha);
 		C.SetPos(LeftX, TempY);
 		C.DrawTileStretched(WhiteMaterial, PlayerBarWidth * PValue, PlayerBarHeight);
 	}
-	
+
 	//--------------------------------
 	// PLAYER NAME
     //--------------------------------
 	TempY -= (8.0*SS) + YL;
-	
+
 	if (Len(ForcedName) <= 0)
 		S = class'ScrnBalance'.default.Mut.ColoredPlayerName(EnemyPRI);
 	else
 		S = ForcedName;
-		
+
 	C.SetDrawColor(255, 255, 255, BeaconAlpha);
 	C.SetPos(LeftX, TempY);
 	C.DrawText(S);
-	
+
 	EnemyScrnPawn = KFHumanPawn(P);
 
 	//--------------------------------
 	// PERK
-    //--------------------------------	
+    //--------------------------------
 	if ( ThePerk != None )
 	{
 		TempSize = PlayerPerkSize * SS;
 		TempX = LeftX - (4.0*SS) - TempSize;
 		TempY = MidY - (TempSize*0.5);
 		C.DrawColor.A = BeaconAlpha;
-		
+
 		TempLevel = ThePerk.Static.PreDrawPerk(C, TheLevel, TempMaterial,TempStarMaterial);
-		
+
 		C.SetPos(TempX, TempY);
 		C.DrawTile(TempMaterial, TempSize, TempSize, 0, 0, TempMaterial.MaterialUSize(), TempMaterial.MaterialVSize());
 	}
 
 
 	TempSize = PlayerPerkSize * SS;
-	
+
 	//--------------------------------
 	// CHAT ICON
     //--------------------------------
-    if ( P.bIsTyping ) 
+    if ( P.bIsTyping )
 	{
         C.SetPos(LeftX + PlayerBarWidth + (4.0*SS), MidY - (TempSize*0.5));
         C.DrawTile(ChatIcon, TempSize, TempSize, 0, 0, ChatIcon.MaterialUSize(), ChatIcon.MaterialVSize());
     }
-	
+
 	C.FontScaleX = 1.0;
 	C.FontScaleY = 1.0;
 	C.Font = CF;
@@ -1863,24 +1863,24 @@ simulated function DrawPortraitSE( Canvas Canvas )
 	local string PortraitString, ShadowString;
 	local font F;
 	local Material BorderTex;
-	
+
 	F = Canvas.Font;
-	
+
 	// SlidePct = Square(PortraitX);
 	SlidePct = PortraitX * PortraitX * PortraitX;
-	
+
 	SS = Canvas.ClipY / 1080.0;
-	
+
 	// Size of the portrait
 	PortW = 256.0 * SS * PortraitScale;
 	PortH = 512.0 * SS * PortraitScale;
-	
+
 	// Position
 	StartX = 0.0 - (SlidePct * PortW);
 	StartY = (Canvas.ClipY - (PortraitY * SS)) - PortH;
-	
+
 	BorderTex = GetBorderTexture(PortraitPRI);
-	
+
 	// Draw the border behind the portrait
 	if (BorderTex == None)
 	{
@@ -1888,71 +1888,71 @@ simulated function DrawPortraitSE( Canvas Canvas )
 		Canvas.DrawColor = WhiteColor;
 		Canvas.DrawTileStretched(Texture'InterfaceContent.BorderBoxA1', PortW + (PortraitBorderSize * 2.0), PortH + (PortraitBorderSize * 2.0));
 	}
-	
+
 	// Some portraits have shitty alpha, draw black behind it to fix this
 	Canvas.SetPos(StartX, StartY);
 	Canvas.Drawcolor = BlackColor;
 	Canvas.DrawTileStretched(WhiteMaterial, PortW, PortH);
-	
+
 	// Draw the portrait, nothing major
 	Canvas.SetPos(StartX, StartY);
 	Canvas.DrawColor = WhiteColor;
 	Canvas.DrawTile(Portrait, PortW, PortH, 0, 0, Portrait.MaterialUSize(), Portrait.MaterialVSize());
-	
+
 	// Border! Fancy
 	if (BorderTex != None)
 	{
 		BTW = BorderTex.MaterialUSize() * SS * PortraitScale;
 		BTH = BorderTex.MaterialVSize() * SS * PortraitScale;
-		
+
 		// Vertically, it's centered at the center of the portrait
 		TempY = StartY + (PortH * 0.5);
 		TempY -= (BTH * 0.5);
-		
+
 		Canvas.SetPos(StartX, TempY);
 		Canvas.DrawColor = WhiteColor;
 		Canvas.DrawTile(BorderTex, BTW, BTH, 0, 0, BorderTex.MaterialUSize(), BorderTex.MaterialVSize());
 	}
-	
+
 	// Now we can draw the player's name
 	StartY += PortH + (PortraitTextPad * SS);
 	StartX += (PortW * 0.5);
-  
+
   Canvas.FontScaleX = (Canvas.ClipY / 1080.0) * PortraitTextScale;
   Canvas.FontScaleY = (Canvas.ClipY / 1080.0) * PortraitTextScale;
 
 	//Canvas.Font = Font'Engine.DefaultFont';
   Canvas.Font = KF2Font;
-	
+
 	if ( Portrait == TraderPortrait )
 		PortraitString = TraderString;
 	else
 		PortraitString = PortraitPRI.PlayerName;
-	
+
 	PortraitString = class'ScrnFunctions'.static.ParseColorTags(PortraitString);
-	
+
 	Canvas.TextSize(PortraitString, TempW, TempH);
-	
+
 	if (TempW > PortW)
 	{
 		Abbrev = float(len(PortraitString)) * PortW / TempW;
 		PortraitString = left(PortraitString, Abbrev);
 		Canvas.TextSize(PortraitString, TempW, TempH);
 	}
-	
+
 	StartX -= (TempW * 0.5);
-	
+
 	// Text for the shadow
 	ShadowString = class'ScrnFunctions'.static.StripColorTags(PortraitString);
-	
+
 	Canvas.SetPos(StartX + 1.0, StartY + 1.0);
 	Canvas.DrawColor = BlackColor;
 	Canvas.DrawTextClipped(ShadowString);
-	
+
 	Canvas.SetPos(StartX, StartY);
 	Canvas.DrawColor = WhiteColor;
 	Canvas.DrawTextClipped(PortraitString);
-		
+
 	// Reset
 	Canvas.Font = F;
 }

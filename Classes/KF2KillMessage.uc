@@ -19,11 +19,11 @@ static function string GetString(optional int Switch, optional PlayerReplication
 		// Other player did not kill this zed
 		if( RelatedPRI_1==None )
 			return GetNameOf(Class<Monster>(OptionalObject));
-		
+
 		// Other player killed this zed!
 		return RelatedPRI_1.PlayerName@"-"@GetNameOf(Class<Monster>(OptionalObject));
 	}
-	
+
 	// Clasic kill messages - +1 Clot kill
 	else
 	{
@@ -40,14 +40,14 @@ static function ClientReceive(PlayerController P, optional int Switch, optional 
 
 	if( Class<Monster>(OptionalObject)==None || HudBase(P.myHud)==None || (RelatedPRI_1==None && Switch==1) )
 		return;
-	
+
 	// Disable standard kill messages
 	HKF = HUDKillingFloor(P.myHud);
 	if (HKF != None)
 		HKF.bTallySpecimenKills = false;
-	
+
 	H = KF2HUD(P.myHud);
-	
+
 	// Always show messages - No bTallySpecimenKills check
     if(H != none)
     {
