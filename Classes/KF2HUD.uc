@@ -124,7 +124,7 @@ simulated function DrawHudPassA (Canvas C)
 
     if ( bDisplayInventory || bInventoryFadingOut )
         DrawInventory(C);
-    if ( bShowDamages )
+    if ( ShowDamages > 0 )
         DrawDamage(C);
 		
 	//------------------------------
@@ -1280,7 +1280,7 @@ function TriggerBar(string TopText, optional string BottomText, optional Sound T
 function DrawFancyBar(Canvas Canvas)
 {
 	local float SS, CenX, CenY, ISize, IClip, Pct;
-	local float BarWidth, BarHeight, DrawX, DrawY, WBW, LT;
+	local float BarWidth, locBarHeight, DrawX, DrawY, WBW, LT;
 	local byte WarnAlpha, BarAlpha, TextAlpha;
 	local float TW, TH;
 	
@@ -1380,7 +1380,7 @@ function DrawFancyBar(Canvas Canvas)
 	else
 		BarWidth = WarnBarWidth * SS;
 	
-	BarHeight = ISize;
+	locBarHeight = ISize;
 	
 	// Draw our bar behind all the stuff first
 	if (MidWaveState > 2)
@@ -1392,13 +1392,13 @@ function DrawFancyBar(Canvas Canvas)
 		if (WBW > 0.0)
 		{
 			DrawX = CenX - (WBW*0.5);
-			DrawY = CenY - (BarHeight*0.5);
+			DrawY = CenY - (locBarHeight*0.5);
 			Canvas.SetDrawColor(255, 255, 255, WarnAlpha);
 			Canvas.SetPos(DrawX, DrawY);
       Canvas.DrawColor.R = 0;
       Canvas.DrawColor.G = 6;
       Canvas.DrawColor.B = 25;
-			Canvas.DrawTile(MidSolidTex, WBW, BarHeight, 0, 0, MidSolidTex.MaterialUSize(), MidSolidTex.MaterialVSize());
+			Canvas.DrawTile(MidSolidTex, WBW, locBarHeight, 0, 0, MidSolidTex.MaterialUSize(), MidSolidTex.MaterialVSize());
 		}
 	}
 	
@@ -1492,11 +1492,11 @@ function DrawFancyBar(Canvas Canvas)
 	
 	if (MidWaveState >= 4 && BarAlpha > 0)
 	{
-		DrawY = CenY + (BarHeight*0.5) + (16.0*SS);
-		BarHeight = WarnSubHeight * SS;
+		DrawY = CenY + (locBarHeight*0.5) + (16.0*SS);
+		locBarHeight = WarnSubHeight * SS;
 
 		CenX = (Canvas.ClipX*0.5);
-		CenY = DrawY+(BarHeight*0.5);
+		CenY = DrawY+(locBarHeight*0.5);
 
 		// DRAW THE BAR FIRST
 		Canvas.SetPos(CenX - (BarWidth*0.5), DrawY);
@@ -1504,7 +1504,7 @@ function DrawFancyBar(Canvas Canvas)
     Canvas.DrawColor.R = 0;
     Canvas.DrawColor.G = 6;
     Canvas.DrawColor.B = 25;
-		Canvas.DrawTile(MidSolidTex, BarWidth, BarHeight, 0, 0, MidSolidTex.MaterialUSize(), MidSolidTex.MaterialVSize());
+		Canvas.DrawTile(MidSolidTex, BarWidth, locBarHeight, 0, 0, MidSolidTex.MaterialUSize(), MidSolidTex.MaterialVSize());
 
 		WBW = (WarnSubHeight / MidLeftTex.MaterialVSize()) * MidLeftTex.MaterialUSize() * SS;
 
@@ -1514,7 +1514,7 @@ function DrawFancyBar(Canvas Canvas)
     Canvas.DrawColor.R = 26;
     Canvas.DrawColor.G = 44;
     Canvas.DrawColor.B = 100;
-		Canvas.DrawTile(MidLeftTex, WBW, BarHeight, 0, 0, MidLeftTex.MaterialUSize(), MidLeftTex.MaterialVSize());
+		Canvas.DrawTile(MidLeftTex, WBW, locBarHeight, 0, 0, MidLeftTex.MaterialUSize(), MidLeftTex.MaterialVSize());
 
 		// RIGHT SIDE
 		Canvas.SetPos(CenX + (BarWidth*0.5), DrawY);
@@ -1522,7 +1522,7 @@ function DrawFancyBar(Canvas Canvas)
     Canvas.DrawColor.R = 26;
     Canvas.DrawColor.G = 44;
     Canvas.DrawColor.B = 100;
-		Canvas.DrawTile(MidRightTex, WBW, BarHeight, 0, 0, MidRightTex.MaterialUSize(), MidRightTex.MaterialVSize());
+		Canvas.DrawTile(MidRightTex, WBW, locBarHeight, 0, 0, MidRightTex.MaterialUSize(), MidRightTex.MaterialVSize());
 		
 		// DRAW THE TEXT YO
 		Canvas.SetDrawColor(MidTextColor.R, MidTextColor.G, MidTextColor.B, TextAlpha);
@@ -1857,7 +1857,7 @@ simulated function Material GetBorderTexture(PlayerReplicationInfo PRI)
 
 simulated function DrawPortraitSE( Canvas Canvas )
 {
-	local float TempX, TempY, PortW, PortH, SS, TempW, TempH, BTW, BTH;
+	local float TempY, PortW, PortH, SS, TempW, TempH, BTW, BTH; // TempX
 	local float StartX, StartY;
 	local float SlidePct, Abbrev;
 	local string PortraitString, ShadowString;
@@ -1929,7 +1929,7 @@ simulated function DrawPortraitSE( Canvas Canvas )
 	else
 		PortraitString = PortraitPRI.PlayerName;
 	
-	PortraitString = class'ScrnBalance'.default.Mut.ParseColorTags(PortraitString);
+	PortraitString = class'ScrnFunctions'.static.ParseColorTags(PortraitString);
 	
 	Canvas.TextSize(PortraitString, TempW, TempH);
 	
@@ -1943,7 +1943,7 @@ simulated function DrawPortraitSE( Canvas Canvas )
 	StartX -= (TempW * 0.5);
 	
 	// Text for the shadow
-	ShadowString = class'ScrnBalance'.default.Mut.StripColorTags(PortraitString);
+	ShadowString = class'ScrnFunctions'.static.StripColorTags(PortraitString);
 	
 	Canvas.SetPos(StartX + 1.0, StartY + 1.0);
 	Canvas.DrawColor = BlackColor;
