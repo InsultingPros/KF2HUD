@@ -1,6 +1,6 @@
 # Killing Floor 2 HUD
 
-![GitHub all releases](https://img.shields.io/github/downloads/InsultingPros/KF2HUD/total)
+[![GitHub all releases](https://img.shields.io/github/downloads/InsultingPros/KF2HUD/total)](https://github.com/InsultingPros/KF2HUD/releases)
 
 KF 2 HUD for Scrn Balance. Credits to [Zedek](https://steamcommunity.com/profiles/76561198067265112) for original porting and sharing.
 
