@@ -9,6 +9,7 @@ function bool InternalDraw(Canvas canvas)
 {
     local float AW, AH, AL, AT, SS, TW, TH;
     local float TempX, TempY;
+    local float oldScaleX, oldScaleY;
     local Font F;
 
     if (bVisible)
@@ -26,7 +27,8 @@ function bool InternalDraw(Canvas canvas)
         //     Canvas.Font = Class'FHLang_Core'.default.KoreanFont;
         // else
             Canvas.Font = KF2Font;
-
+        oldScaleX = Canvas.FontScaleX;
+        oldScaleY = Canvas.FontScaleY;
         Canvas.FontScaleX = 1.0;
         Canvas.FontScaleY = 1.0;
 
@@ -57,8 +59,8 @@ function bool InternalDraw(Canvas canvas)
         Canvas.DrawText(Caption);
 
         Canvas.Font = F;
-        Canvas.FontScaleX = 1.0;
-        Canvas.FontScaleY = 1.0;
+        Canvas.FontScaleX = oldScaleX;
+        Canvas.FontScaleY = oldScaleY;
     }
 
     return true;
