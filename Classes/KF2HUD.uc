@@ -257,6 +257,7 @@ simulated function DrawKFHUDTextElements(Canvas C)
     local float    MX, MY, SS, HDX, HDY, SX, SY, FX, FY;
     local Font         CF, KFF;
     local float KS;
+    local float oldScaleX, oldScaleY;
 
     if ( PlayerOwner == none || KFGRI == none || !KFGRI.bMatchHasBegun || KFPlayerController(PlayerOwner).bShopping )
         return;
@@ -268,6 +269,8 @@ simulated function DrawKFHUDTextElements(Canvas C)
 
     CF = C.Font;
     C.Font = KF2Font;
+    oldScaleX = C.FontScaleX;
+    oldScaleY = C.FontScaleY;
     C.FontScaleX = 1.0;
     C.FontScaleY = 1.0;
 
@@ -410,6 +413,8 @@ simulated function DrawKFHUDTextElements(Canvas C)
     C.FontScaleX = 1;
     C.FontScaleY = 1;
     C.Font = CF;
+    C.FontScaleX = oldScaleX;
+    C.FontScaleY = oldScaleY;
 }
 
 //------------------------------------------------------------------------
@@ -430,6 +435,7 @@ simulated function DrawOldHudItems(Canvas C)
     local Syringe S;
     local Font CF;
     local Class<SRVeterancyTypes> SV;
+    local float oldScaleX, oldScaleY;
 
     if (Owner != None && PlayerController(Owner) != None && KFPlayerController(PlayerController(Owner)).bShopping)
         return;
@@ -445,6 +451,8 @@ simulated function DrawOldHudItems(Canvas C)
     }
 
     CF = C.Font;
+    oldScaleX = C.FontScaleX;
+    oldScaleY = C.FontScaleY;
     C.FontScaleX = 1.0;
     C.FontScaleY = 1.0;
 
@@ -819,8 +827,8 @@ simulated function DrawOldHudItems(Canvas C)
     if (ShouldDrawFancy() && MidWaveState > 0)
         DrawFancyBar(C);
 
-    C.FontScaleX = 1.0;
-    C.FontScaleY = 1.0;
+    C.FontScaleX = oldScaleX;
+    C.FontScaleY = oldScaleY;
     C.Font = CF;
 }
 
@@ -891,10 +899,13 @@ function DisplayMessages(Canvas C)
     local float XL, YL, XXL, YYL;
     local Color Blk;
     local font CF;
+    local float oldScaleX, oldScaleY;
 
     Blk.A = 192;
 
     CF = C.Font;
+    oldScaleX = C.FontScaleX;
+    oldScaleY = C.FontScaleY;
     C.FontScaleX = 1.0;
     C.FontScaleY = 1.0;
 
@@ -990,8 +1001,8 @@ function DisplayMessages(Canvas C)
         YPos += (YL+YYL);
     }
 
-    C.FontScaleX = 1.0;
-    C.FontScaleY = 1.0;
+    C.FontScaleX = oldScaleX;
+    C.FontScaleY = oldScaleY;
     C.Font = CF;
 }
 
@@ -1000,6 +1011,7 @@ simulated function DrawMessage( Canvas C, int i, float PosX, float PosY, out flo
     local float FadeValue;
     local float ScreenX, ScreenY, FSX, FSY;
     local font F;
+    local float oldScaleX, oldScaleY;
 
     if (bHideWaitMessage && string(LocalMessages[i].Message) ~= WaitingMessageClass)
     {
@@ -1016,10 +1028,12 @@ simulated function DrawMessage( Canvas C, int i, float PosX, float PosY, out flo
     || string(LocalMessages[i].Message) ~= "KFMod.KillsMessage"
     || LocalMessages[i].Message == Class'KF2KillMessage')
         {
+            F = C.Font;
             C.Font = LocalMessages[i].StringFont;
             C.TextSize(LocalMessages[i].StringMessage, FSX, FSY);
             PosX = 1.0 - PosX;
             DrawKillMessage(C, i, PosX, PosY, DX, DY);
+            C.Font = F;
             return;
         }
 
@@ -1036,6 +1050,8 @@ simulated function DrawMessage( Canvas C, int i, float PosX, float PosY, out flo
 
 
     // Let's draw a KF2 styled pickup message
+    oldScaleX = C.FontScaleX;
+    oldScaleY = C.FontScaleY;
     C.FontScaleX = PickupFontScale * (C.ClipY / 1080.0);
     C.FontScaleY = PickupFontScale * (C.ClipY / 1080.0);
     F = C.Font;
@@ -1076,8 +1092,8 @@ simulated function DrawMessage( Canvas C, int i, float PosX, float PosY, out flo
 
     LocalMessages[i].Drawn = true;
 
-    C.FontScaleX = 1.0;
-    C.FontScaleY = 1.0;
+    C.FontScaleX = oldScaleX;
+    C.FontScaleY = oldScaleY;
     C.Font = F;
 }
 
@@ -1087,6 +1103,8 @@ simulated function DrawKillMessage( Canvas Canvas, int i, float PosX, float PosY
     local Float SS, TW, TH, FadeValue;
     local String S;
     local float DrawX, DrawY, BoxW, BoxH, ISize, Pad;
+    local Font F;
+    local float oldScaleX, oldScaleY;
 
     if (LocalMessages[i].Drawn)
         return;
@@ -1103,11 +1121,14 @@ simulated function DrawKillMessage( Canvas Canvas, int i, float PosX, float PosY
     SS = Canvas.ClipY / 1080.0;
     S = LocalMessages[i].StringMessage;
 
+    F = Canvas.Font;
     // if (Class'KF2GUILabel'.default.bKorean)
     //     Canvas.Font = Class'FHLang_Core'.default.KoreanFont;
     // else
         Canvas.Font = KF2Font;
 
+    oldScaleX = Canvas.FontScaleX;
+    oldScaleY = Canvas.FontScaleY;
     Canvas.FontScaleX = KillScale * SS * KillDampen;
     Canvas.FontScaleY = KillScale * SS * KillDampen;
 
@@ -1154,12 +1175,13 @@ simulated function DrawKillMessage( Canvas Canvas, int i, float PosX, float PosY
     Canvas.SetDrawColor(255, 255, 255, 255 * FadeValue);
     Canvas.DrawTile(SkullIcon, ISize, ISize, 0, 0, SkullIcon.MaterialUSize(), SkullIcon.MaterialVSize());
 
-    Canvas.FontScaleX = 1.0;
-    Canvas.FontScaleY = 1.0;
+    Canvas.FontScaleX = oldScaleX;
+    Canvas.FontScaleY = oldScaleY;
 
     LocalMessages[i].Drawn = true;
 
     DY = (BoxH + Pad) / Canvas.ClipY;
+    Canvas.Font = F;
 }
 
 // Draw a damage message
@@ -1168,6 +1190,8 @@ simulated function DrawDamageMessage( Canvas Canvas, int i, float PosX, float Po
     local Float SS, TW, TH, FadeValue;
     local String S;
     local float DrawX, DrawY;
+    local Font F;
+    local float oldScaleX, oldScaleY;
 
     if (LocalMessages[i].Drawn)
         return;
@@ -1184,7 +1208,10 @@ simulated function DrawDamageMessage( Canvas Canvas, int i, float PosX, float Po
     SS = Canvas.ClipY / 1080.0;
     S = LocalMessages[i].StringMessage;
 
+    F = Canvas.Font;
     Canvas.Font = KF2Font;
+    oldScaleX = Canvas.FontScaleX;
+    oldScaleY = Canvas.FontScaleY;
     Canvas.FontScaleX = DamageScale * SS;
     Canvas.FontScaleY = DamageScale * SS;
     Canvas.TextSize(S, TW, TH);
@@ -1199,12 +1226,13 @@ simulated function DrawDamageMessage( Canvas Canvas, int i, float PosX, float Po
     Canvas.DrawColor.A  = LocalMessages[i].DrawColor.A * FadeValue;
     Canvas.DrawText(S);
 
-    Canvas.FontScaleX = 1.0;
-    Canvas.FontScaleY = 1.0;
 
     LocalMessages[i].Drawn = true;
 
     DY = (TH + (4.0*SS)) / Canvas.ClipY;
+    Canvas.FontScaleX = oldScaleX;
+    Canvas.FontScaleY = oldScaleY;
+    Canvas.Font = F;
 }
 
 // NEW AND UPDATED SUPPORT FOR DAMAGE MESSAGES
@@ -1283,6 +1311,8 @@ function DrawFancyBar(Canvas Canvas)
     local float BarWidth, locBarHeight, DrawX, DrawY, WBW, LT;
     local byte WarnAlpha, BarAlpha, TextAlpha;
     local float TW, TH;
+    local Font F;
+    local float oldScaleX, oldScaleY;
 
     SS = Canvas.ClipY / 1080.0;
 
@@ -1443,6 +1473,9 @@ function DrawFancyBar(Canvas Canvas)
 
     if (MidWaveState >= 4)
     {
+        F = Canvas.Font;
+        oldScaleX = Canvas.FontScaleX;
+        oldScaleY = Canvas.FontScaleY;
         Canvas.SetDrawColor(MidTextColor.R, MidTextColor.G, MidTextColor.B, BarAlpha);
         Canvas.FontScaleX = WarnTextScale * SS;
         Canvas.FontScaleY = WarnTextScale * SS;
@@ -1453,6 +1486,9 @@ function DrawFancyBar(Canvas Canvas)
         Canvas.TextSize(MidHeader, TW, TH);
         Canvas.SetPos(CenX - (TW*0.5), CenY - (TH*0.5));
         Canvas.DrawText(MidHeader);
+        Canvas.Font = F;
+        Canvas.FontScaleX = oldScaleX;
+        Canvas.FontScaleY = oldScaleY;
     }
 
     //-----------------------------------------------------//
@@ -1529,12 +1565,18 @@ function DrawFancyBar(Canvas Canvas)
     Canvas.DrawColor.R = 26;
     Canvas.DrawColor.G = 44;
     Canvas.DrawColor.B = 100;
+        F = Canvas.Font;
+        oldScaleX = Canvas.FontScaleX;
+        oldScaleY = Canvas.FontScaleY;
         Canvas.FontScaleX = SubTextScale * SS;
         Canvas.FontScaleY = SubTextScale * SS;
         Canvas.Font = KF2Font;
         Canvas.TextSize(MidSub, TW, TH);
         Canvas.SetPos(CenX - (TW*0.5), CenY - (TH*0.5));
         Canvas.DrawText(MidSub);
+        Canvas.Font = F;
+        Canvas.FontScaleX = oldScaleX;
+        Canvas.FontScaleY = oldScaleY;
     }
 
 }
@@ -1570,6 +1612,7 @@ function float DrawSingleBoss(string MonName, float Pct, Canvas Canvas, float YS
     local float NewWidth, Overlap, BSize;
     local color FinCol;
     local Font F;
+    local float oldScaleX, oldScaleY;
 
     F = Canvas.Font;
 
@@ -1646,6 +1689,8 @@ function float DrawSingleBoss(string MonName, float Pct, Canvas Canvas, float YS
     // Draw the Text
     F = Canvas.Font;
     Canvas.Font = KF2Font;
+    oldScaleX = Canvas.FontScaleX;
+    oldScaleY = Canvas.FontScaleY;
     Canvas.FontScaleX = BossTextScale * SS;
     Canvas.FontScaleY = BossTextScale * SS;
     Canvas.SetPos(BL + (BossTextX * 0.5 * SS) + (2*SS), YStart + (BossTextY * 0.5 * SS) + (2*SS));
@@ -1656,9 +1701,9 @@ function float DrawSingleBoss(string MonName, float Pct, Canvas Canvas, float YS
     Canvas.SetDrawColor(255, 255, 255, 255);
     Canvas.DrawText(MonName);
 
-    Canvas.FontScaleX = 1.0;
-    Canvas.FontScaleY = 1.0;
     Canvas.Font = F;
+    Canvas.FontScaleX = oldScaleX;
+    Canvas.FontScaleY = oldScaleY;
 
     return BH + (4.0 * SS);
 }
@@ -1692,6 +1737,7 @@ simulated function DrawOverheadBar(Canvas C, Pawn P, float ScreenLocX, float Scr
     local float Dist;
     local class<SRVeterancyTypes> ThePerk;
     local int TheLevel;
+    local float oldScaleX, oldScaleY;
 
     Dist = vsize(P.Location - PlayerOwner.CalcViewLocation);
     if ( Dist <= BarDistMin )
@@ -1709,6 +1755,8 @@ simulated function DrawOverheadBar(Canvas C, Pawn P, float ScreenLocX, float Scr
     SS = (0.5 + ((C.ClipY / 1080.0) * 0.5)) * fZoom;
 
     CF = C.Font;
+    oldScaleX = C.FontScaleX;
+    oldScaleY = C.FontScaleY;
     C.FontScaleX = PlayerTextScale * SS;
     C.FontScaleY = PlayerTextScale * SS;
     C.Font = KF2Font;
@@ -1835,8 +1883,8 @@ simulated function DrawOverheadBar(Canvas C, Pawn P, float ScreenLocX, float Scr
         C.DrawTile(ChatIcon, TempSize, TempSize, 0, 0, ChatIcon.MaterialUSize(), ChatIcon.MaterialVSize());
     }
 
-    C.FontScaleX = 1.0;
-    C.FontScaleY = 1.0;
+    C.FontScaleX = oldScaleX;
+    C.FontScaleY = oldScaleY;
     C.Font = CF;
 }
 
@@ -1863,6 +1911,7 @@ simulated function DrawPortraitSE( Canvas Canvas )
     local string PortraitString, ShadowString;
     local font F;
     local Material BorderTex;
+    local float oldScaleX, oldScaleY;
 
     F = Canvas.Font;
 
@@ -1918,6 +1967,8 @@ simulated function DrawPortraitSE( Canvas Canvas )
     StartY += PortH + (PortraitTextPad * SS);
     StartX += (PortW * 0.5);
 
+    oldScaleX = Canvas.FontScaleX;
+    oldScaleY = Canvas.FontScaleY;
   Canvas.FontScaleX = (Canvas.ClipY / 1080.0) * PortraitTextScale;
   Canvas.FontScaleY = (Canvas.ClipY / 1080.0) * PortraitTextScale;
 
@@ -1955,6 +2006,8 @@ simulated function DrawPortraitSE( Canvas Canvas )
 
     // Reset
     Canvas.Font = F;
+    Canvas.FontScaleX = oldScaleX;
+    Canvas.FontScaleY = oldScaleY;
 }
 
 defaultproperties
