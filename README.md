@@ -29,7 +29,6 @@ Use [KF Compile Tool](https://github.com/InsultingPros/KFCompileTool) for easy c
 ```cpp
 EditPackages=ServerPerks
 EditPackages=ScrnShared
-EditPackages=ScrnVotingHandler
 EditPackages=ScrnBalanceSrv
 EditPackages=KF2HUD
 ```
