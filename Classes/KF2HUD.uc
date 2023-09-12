@@ -87,10 +87,28 @@ var()            bool                    bDrawWeaponName;
 // PORTRAIT
 var()            float                    PortraitScale, PortraitTextScale, PortraitY, PortraitTextPad, PortraitBorderSize;
 
+var const byte BARSTL_KF2;
+var const byte HUDSTL_KF2;
+
 //----------------------------------------------------------------------------
+simulated function bool IsKF2HUD()
+{
+    return HudStyle == HUDSTL_KF2;
+}
+
+simulated function bool IsKF2BAR()
+{
+    return BarStyle == BARSTL_KF2;
+}
 
 simulated function DrawHudPassA (Canvas C)
 {
+    // TODO (here and below): switch to delegate functions instead of checking IsKF2HUD() on every call
+    if (!IsKF2HUD()) {
+        super.DrawHudPassA(C);
+        return;
+    }
+
     DrawStoryHUDInfo(C);
     DrawDoorHealthBars(C);
 
@@ -258,6 +276,11 @@ simulated function DrawKFHUDTextElements(Canvas C)
     local Font         CF, KFF;
     local float KS;
     local float oldScaleX, oldScaleY;
+
+    if (!IsKF2HUD()) {
+        super.DrawKFHUDTextElements(C);
+        return;
+    }
 
     if ( PlayerOwner == none || KFGRI == none || !KFGRI.bMatchHasBegun || KFPlayerController(PlayerOwner).bShopping )
         return;
@@ -436,6 +459,11 @@ simulated function DrawOldHudItems(Canvas C)
     local Font CF;
     local Class<SRVeterancyTypes> SV;
     local float oldScaleX, oldScaleY;
+
+    if (!IsKF2HUD()) {
+        super.DrawOldHudItems(C);
+        return;
+    }
 
     if (Owner != None && PlayerController(Owner) != None && KFPlayerController(PlayerController(Owner)).bShopping)
         return;
@@ -834,6 +862,11 @@ simulated function DrawOldHudItems(Canvas C)
 
 simulated function CalculateAmmo()
 {
+    if (!IsKF2HUD()) {
+        super.CalculateAmmo();
+        return;
+    }
+
     MaxAmmoPrimary = 1;
     CurAmmoPrimary = 1;
     MagAmmo = 0;
@@ -854,8 +887,13 @@ simulated function CalculateAmmo()
     AltAmmoValue = CalculateAltAmmo();
 }
 
-// KF2 doesn't draw this
-simulated function DrawWeaponName(Canvas C);
+simulated function DrawWeaponName(Canvas C)
+{
+    if (!IsKF2HUD()) {
+        super.DrawWeaponName(C);
+    }
+    // KF2 doesn't draw this
+}
 
 // Alternate ammo value to show
 simulated function int CalculateAltAmmo()
@@ -900,6 +938,11 @@ function DisplayMessages(Canvas C)
     local Color Blk;
     local font CF;
     local float oldScaleX, oldScaleY;
+
+    if (!IsKF2HUD()) {
+        super.DisplayMessages(C);
+        return;
+    }
 
     Blk.A = 192;
 
@@ -1711,14 +1754,22 @@ function float DrawSingleBoss(string MonName, float Pct, Canvas Canvas, float YS
 //--------------------------------------------------------------------------------------------------------
 // O V E R H E A D   B A R S   F O R   P L A Y E R S
 //--------------------------------------------------------------------------------------------------------
-
-function DrawPlayerInfo(Canvas C, Pawn P, float ScreenLocX, float ScreenLocY)
+exec function SetBarStyle(byte value)
 {
-    ScrnDrawPlayerInfoBase = ScrnDrawPlayerInfoClassic;
-    super.DrawPlayerInfo(C, P, ScreenLocX, ScreenLocY);
+    if ( value >= BarStyles.length )
+        return;
+
+    BarStyle = value;
+    if ( BarStyle == BARSTL_KF2 ) {
+        ScrnDrawPlayerInfoBase = DrawPlayerInfoBaseKF2;
+    }
+    else {
+        super.SetBarStyle(value);
+    }
 }
 
-simulated function ScrnDrawPlayerInfoClassic(Canvas C, Pawn P, float ScreenLocX, float ScreenLocY, float fZoom, KFPlayerReplicationInfo EnemyPRI, bool bSameTeam)
+simulated function DrawPlayerInfoBaseKF2(Canvas C, Pawn P, float ScreenLocX, float ScreenLocY, float fZoom,
+        KFPlayerReplicationInfo EnemyPRI, bool bSameTeam)
 {
     DrawOverheadBar(C, P, ScreenLocX, ScreenLocY, fZoom, EnemyPRI);
 }
@@ -1912,6 +1963,11 @@ simulated function DrawPortraitSE( Canvas Canvas )
     local font F;
     local Material BorderTex;
     local float oldScaleX, oldScaleY;
+
+    if (!IsKF2HUD()) {
+        super.DrawPortraitSE(Canvas);
+        return;
+    }
 
     F = Canvas.Font;
 
@@ -2196,4 +2252,12 @@ defaultproperties
      PortraitY=450.000000
      PortraitTextPad=10.000000
      PortraitBorderSize=4.000000
+
+    HudStyles(4)="KF2 HUD"
+    HUDSTL_KF2=4
+    HudStyle=4
+
+    BarStyles(4)="KF2 Bars"
+    BARSTL_KF2=4
+    BarStyle=4
 }

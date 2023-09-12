@@ -1,22 +1,20 @@
-class Mut extends Mutator;
+class Mut extends ScrnMutator;
 
-event PreBeginPlay()
+function PostBeginPlay()
 {
-  local KFGameType KFGT;
+    super.PostBeginPlay();
+    if (bDeleteMe)
+        return;
 
-  super.PreBeginPlay();
-
-  KFGT = KFGameType(level.game);
-  if(KFGT == none)
-    log("YOU FAILED FAGGOT! KFGameType is not found!",class.name);
-
-  KFGT.HUDType = string(class'KF2HUD.KF2HUD');
+    KF.HUDType = string(class'KF2HUD');
+    RegisterPostMortem();
 }
 
 defaultproperties
 {
-  GroupName="KF-KF2HUD"
-  FriendlyName="KF2HUD"
-  Description="Fancy HUD."
-  bAddToServerPackages=True
+    VersionNumber=96901
+    GroupName="KF-KF2HUD"
+    FriendlyName="KF2HUD"
+    Description="KF2 HUD."
+    bAddToServerPackages=True
 }
