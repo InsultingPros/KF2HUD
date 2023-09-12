@@ -6,13 +6,16 @@ function PostBeginPlay()
     if (bDeleteMe)
         return;
 
-    KF.HUDType = string(class'KF2HUD');
+    // Do not replace TscHUD, FtgHUD, etc.
+    if (GetItemName(KF.HUDType) ~= "ScrnHUD") {
+        KF.HUDType = string(class'KF2HUD');
+    }
     RegisterPostMortem();
 }
 
 defaultproperties
 {
-    VersionNumber=96901
+    VersionNumber=96902
     GroupName="KF-KF2HUD"
     FriendlyName="KF2HUD"
     Description="KF2 HUD."
