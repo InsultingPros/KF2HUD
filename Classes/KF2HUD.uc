@@ -1978,7 +1978,12 @@ simulated function DrawPortraitSE( Canvas Canvas )
 
     // Size of the portrait
     PortW = 256.0 * SS * PortraitScale;
-    PortH = 512.0 * SS * PortraitScale;
+    if ( bSpecialPortrait && Portrait != TraderPortrait ) {
+        PortH = PortW * Portrait.MaterialVSize() / Portrait.MaterialUSize();
+    }
+    else {
+        PortH = 512.0 * SS * PortraitScale;
+    }
 
     // Position
     StartX = 0.0 - (SlidePct * PortW);
