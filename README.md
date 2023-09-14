@@ -21,7 +21,6 @@ KF2HUD.Mut
 
 - [Server Perks](https://forums.tripwireinteractive.com/index.php?threads/mut-per-server-stats.36898/) v7.50.
 - [Scrn Shared](https://github.com/poosh/KF-ScrnShared).
-- [Scrn Voting Handler](https://github.com/poosh/KF-ScrnVotingHandler).
 - [Scrn Balance](https://github.com/poosh/KF-ScrnBalance) v9.69.16 and higher.
 
 Use [KF Compile Tool](https://github.com/InsultingPros/KFCompileTool) for easy compilation.
