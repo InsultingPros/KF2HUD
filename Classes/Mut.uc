@@ -19,5 +19,5 @@ defaultproperties
     GroupName="KF-KF2HUD"
     FriendlyName="KF2HUD"
     Description="KF2 HUD."
-    bAddToServerPackages=True
+    bAddToServerPackages=true
 }

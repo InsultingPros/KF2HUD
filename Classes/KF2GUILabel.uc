@@ -24,7 +24,7 @@ function bool InternalDraw(Canvas canvas)
         F = Canvas.Font;
 
         // if (default.bKorean)
-        //     Canvas.Font = Class'FHLang_Core'.default.KoreanFont;
+        //     Canvas.Font = class'FHLang_Core'.default.KoreanFont;
         // else
             Canvas.Font = KF2Font;
         oldScaleX = Canvas.FontScaleX;

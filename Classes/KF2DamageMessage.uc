@@ -1,20 +1,20 @@
-Class KF2DamageMessage extends LocalMessage;
+class KF2DamageMessage extends LocalMessage;
 
 var localized string HPString;
 var localized float MessageShowTime;
 
 static function string GetNameOf( class<Monster> M )
 {
-    if( Len(M.Default.MenuName)==0 )
+    if( Len(M.default.MenuName)==0 )
         return string(M.Name);
-    return M.Default.MenuName;
+    return M.default.MenuName;
 }
 
 static function ClientReceive(PlayerController P, optional int Switch, optional PlayerReplicationInfo RelatedPRI_1, optional PlayerReplicationInfo RelatedPRI_2, optional Object OptionalObject)
 {
     local KF2HUD H;
 
-    if( Class<Monster>(OptionalObject)==None || HudBase(P.myHud)==None || (RelatedPRI_1==None && Switch==1) )
+    if( class<Monster>(OptionalObject)==none || HudBase(P.myHud)==none || (RelatedPRI_1==none && Switch==1) )
         return;
 
     // Change this to the proper class
@@ -22,7 +22,7 @@ static function ClientReceive(PlayerController P, optional int Switch, optional 
     if(H != none)
     {
         if (!H.UpdateDamageMessage(OptionalObject,RelatedPRI_1,Switch))
-            H.LocalizedMessage(Default.Class,Switch,RelatedPRI_1,,OptionalObject);
+            H.LocalizedMessage(default.class,Switch,RelatedPRI_1,,OptionalObject);
     }
 
 }
@@ -39,7 +39,7 @@ static function string GetString(
     optional Object OptionalObject
     )
 {
-    return GetNameOf(Class<Monster>(OptionalObject))@"-"$Switch@Default.HPString;
+    return GetNameOf(class<Monster>(OptionalObject))@"-"$Switch@default.HPString;
 }
 
 // Fade color: Green (0-99 damage) > Yellow (100-499 damage) > Red (500-999 damage) > Dark Red (999+ damage).
@@ -65,8 +65,8 @@ defaultproperties
 {
      HPString="HP"
      MessageShowTime=4.000000
-     bIsConsoleMessage=False
-     bFadeMessage=True
+     bIsConsoleMessage=false
+     bFadeMessage=true
      DrawColor=(B=0,G=0,R=150)
      DrawPivot=DP_UpperLeft
      StackMode=SM_Down

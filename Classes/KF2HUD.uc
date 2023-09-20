@@ -11,45 +11,45 @@ var()           SpriteWidget    KF2BLBase, KF2BLScan, KF2BLOverlay, KF2HealthIco
 var()           SpriteWidget    KF2BRBase, KF2BRScan, KF2BROverlay, KF2BRAngle, KF2BRMelee, KF2DoshIcon, KF2WeightIcon, KF2BatteryIcon;
 var()           SpriteWidget    KF2AltBase, KF2AltScan;
 var()           NumericWidget   KF2HealthDigits, KF2ArmorDigits;
-var()            Float            HUDNumScale, XPStartX, XPWidth;
-var()            Float            PerkStartX, PerkStartY, PerkIconSize, PerkTextScale, PerkTextY, SyringeYBottom, SyringeYTop, SyringeHeight;
-var()            Float            BatteryBottom, BatteryTop, BatteryHeight;
-var()            Float            HealthIconX, HealthIconY, ArmorIconX, ArmorIconY, SyringeIconX, SyringeIconY, SmallIconSize;
-var()            Float            DoshX, DoshY, WeightX, WeightY, HUDDoshScale, HUDWeightScale, DoshIconX, DoshIconY, DoshIconSize, WeightIconX, WeightIconY, NadeX, NadeY, HUDNadeScale, NadeIconX, NadeIconY, NadeIconSize;
-var()            Float            FireModeX, FireModeY, FireModeSize;
-var()            Float            MagAmmoX, MagAmmoY, MagAmmoScale;
-var()            Float            AltIconX, AltIconY, AltIconSize;
-var()            Float            AltAmmoX, AltAmmoY, AltAmmoScale;
-var()            Float            ReserveX, ReserveY, ReserveScale;
-var()            Float            BatteryIconX, BatteryIconY;
+var()            float            HUDNumScale, XPStartX, XPWidth;
+var()            float            PerkStartX, PerkStartY, PerkIconSize, PerkTextScale, PerkTextY, SyringeYBottom, SyringeYTop, SyringeHeight;
+var()            float            BatteryBottom, BatteryTop, BatteryHeight;
+var()            float            HealthIconX, HealthIconY, ArmorIconX, ArmorIconY, SyringeIconX, SyringeIconY, SmallIconSize;
+var()            float            DoshX, DoshY, WeightX, WeightY, HUDDoshScale, HUDWeightScale, DoshIconX, DoshIconY, DoshIconSize, WeightIconX, WeightIconY, NadeX, NadeY, HUDNadeScale, NadeIconX, NadeIconY, NadeIconSize;
+var()            float            FireModeX, FireModeY, FireModeSize;
+var()            float            MagAmmoX, MagAmmoY, MagAmmoScale;
+var()            float            AltIconX, AltIconY, AltIconSize;
+var()            float            AltAmmoX, AltAmmoY, AltAmmoScale;
+var()            float            ReserveX, ReserveY, ReserveScale;
+var()            float            BatteryIconX, BatteryIconY;
 var()            Color            KF2TextColor;
 var()            Int                MagAmmo, AltAmmoValue;
-var()            Float            ChatFontScale, PickupFontScale;
+var()            float            ChatFontScale, PickupFontScale;
 
 // Top-left
 var()            SpriteWidget    KF2TLBase, KF2TLScan, KF2TLOverlay, KF2TLSquare, KF2TLClock, KF2TLZed;
-var()            Float            TraderBarX, TraderBarY, TraderBarWidth, SquareSize, ArrowPad, ArrowMinDist, ArrowScale;
+var()            float            TraderBarX, TraderBarY, TraderBarWidth, SquareSize, ArrowPad, ArrowMinDist, ArrowScale;
 var()            Texture            ArrowUp, ArrowDown;
-var()            Float            TraderTextX, TraderTextY, TraderTextScale;
-var()            Float            TraderDistX, TraderDistY, TraderDistScale;
-var()            Float            WaveTextX, WaveTextY, WaveTextScale;
-var()            Float            WaveCountX, WaveCountY, WaveCountScale;
-var()            Float            ClockX, ClockY, ClockSize;
-var()            Float            ZedX, ZedY, ZedSize;
-var()            Float            ClockTextX, ClockTextY, ClockTextScale;
+var()            float            TraderTextX, TraderTextY, TraderTextScale;
+var()            float            TraderDistX, TraderDistY, TraderDistScale;
+var()            float            WaveTextX, WaveTextY, WaveTextScale;
+var()            float            WaveCountX, WaveCountY, WaveCountScale;
+var()            float            ClockX, ClockY, ClockSize;
+var()            float            ZedX, ZedY, ZedSize;
+var()            float            ClockTextX, ClockTextY, ClockTextScale;
 
 // Kill messages
-var()            Float            KillScale, KillSkullSize, KillPadding, DamageScale, KillDampen;
+var()            float            KillScale, KillSkullSize, KillPadding, DamageScale, KillDampen;
 var()            bool            bColoredKillMessages;
 var()            Material        KillBG, SkullIcon;
 
 // Mid-wave stuff: Trader, wave, etc.
 var()            bool            bInGameWave, bPulseIn, bHideWaitMessage;
 var()            byte            WarnPulseCurrent, WarnPulseLimit;
-var()            Float            WarnScaleMax, WarnScaleMin, WarnIconSize, WarnSubHeight, WarnBarWidth, WarnSubWidth, WarnPulseTime, WarnClip;
-var()            Float            WarnSubLast, WarnSubTime, WarnSubStart, WarnSubFadeTime, WarnSubGrowTime;
-var()            Float            WarnShrinkTime, WarnGrowTime, WarnStayTime, WarnFadeTime, WarnFadeAlpha;
-var()            Float            TimeCheckLast, WarnTextScale, SubTextScale;
+var()            float            WarnScaleMax, WarnScaleMin, WarnIconSize, WarnSubHeight, WarnBarWidth, WarnSubWidth, WarnPulseTime, WarnClip;
+var()            float            WarnSubLast, WarnSubTime, WarnSubStart, WarnSubFadeTime, WarnSubGrowTime;
+var()            float            WarnShrinkTime, WarnGrowTime, WarnStayTime, WarnFadeTime, WarnFadeAlpha;
+var()            float            TimeCheckLast, WarnTextScale, SubTextScale;
 var()            Sound            WaveCompleteSound, WaveBeginSound;
 var()            Material        MidWarnTex, MidSolidTex, MidLeftTex, MidRightTex;
 var()            String            MidHeader, MidSub, WaveIncomingString, WaveCompleteString;
@@ -67,15 +67,15 @@ var()            byte                    MidWaveState;
 
 // Boss health bar
 var()            Material                BBLeft, BBMid, BBRight, BBSkull;
-var()            Float                    BBSkullSize, BBSkullX, BBSkullY;
+var()            float                    BBSkullSize, BBSkullX, BBSkullY;
 var()            color                    BossBarGreen, BossBarRed;
-var()            Float                    BossTextX, BossTextY, BossTextScale;
+var()            float                    BossTextX, BossTextY, BossTextScale;
 
 // For player bars
-var(Players)    Float                    PlayerBarWidth, PlayerBarHeight;
-var(Players)    Float                    PlayerTextScale, PlayerPerkSize;
-var(Players)    Float                    BarDistMin, BarDistMax;
-var(Players)    Float                    BarScaleMin, BarScaleMax;
+var(Players)    float                    PlayerBarWidth, PlayerBarHeight;
+var(Players)    float                    PlayerTextScale, PlayerPerkSize;
+var(Players)    float                    BarDistMin, BarDistMax;
+var(Players)    float                    BarScaleMin, BarScaleMax;
 
 var()            String                    KF2TraderString, KF2WaveString;
 
@@ -129,7 +129,7 @@ simulated function DrawHudPassA (Canvas C)
     // VOICE
     //------------------------------
     if ( Level.TimeSeconds - LastVoiceGainTime < 0.333 )  {
-        if ( !bUsingVOIP && PlayerOwner != None && PlayerOwner.ActiveRoom != None &&
+        if ( !bUsingVOIP && PlayerOwner != none && PlayerOwner.ActiveRoom != none &&
              PlayerOwner.ActiveRoom.GetTitle() == "Team" )
         {
             bUsingVOIP = true;
@@ -148,7 +148,7 @@ simulated function DrawHudPassA (Canvas C)
     //------------------------------
     // MID-WAVE
     //------------------------------
-    if (KFGRI != None)
+    if (KFGRI != none)
     {
         // Are we in a wave?
         if (KFGRI.bWaveInProgress)
@@ -176,7 +176,7 @@ simulated function DrawHudPassA (Canvas C)
 // TOP LEFT TRADER AND WAVE
 //------------------------------------------------------------------------
 
-simulated function Float DrawTraderSquare(Canvas C, float MX, float MY, float SX, float SY)
+simulated function float DrawTraderSquare(Canvas C, float MX, float MY, float SX, float SY)
 {
     local float SS, PCT, HDX, HDY, PPX, PPY, SSX, SSY;
     local Vector WorldPos;
@@ -302,8 +302,8 @@ simulated function DrawKFHUDTextElements(Canvas C)
 
     KS = 1.0;
     KFF = KF2Font;
-    // if (Class'KF2GUILabel'.default.bKorean)
-    //     KFF = Class'FHLang_Core'.default.KoreanFont;
+    // if (class'KF2GUILabel'.default.bKorean)
+    //     KFF = class'FHLang_Core'.default.KoreanFont;
 
     // -- BASE TEXTURE -- //
     MX = KF2TLBase.WidgetTexture.MaterialUSize() * KF2TLBase.TextureScale * SS;
@@ -457,7 +457,7 @@ simulated function DrawOldHudItems(Canvas C)
     local String WS;
     local Syringe S;
     local Font CF;
-    local Class<SRVeterancyTypes> SV;
+    local class<SRVeterancyTypes> SV;
     local float oldScaleX, oldScaleY;
 
     if (!IsKF2HUD()) {
@@ -465,7 +465,7 @@ simulated function DrawOldHudItems(Canvas C)
         return;
     }
 
-    if (Owner != None && PlayerController(Owner) != None && KFPlayerController(PlayerController(Owner)).bShopping)
+    if (Owner != none && PlayerController(Owner) != none && KFPlayerController(PlayerController(Owner)).bShopping)
         return;
 
     // Normal HUD
@@ -572,15 +572,15 @@ simulated function DrawOldHudItems(Canvas C)
     //-------------------------------------------------------
     // -- PERK GARBAGE
     //-------------------------------------------------------
-    SV = Class<SRVeterancyTypes>(KFPlayerReplicationInfo(PawnOwnerPRI).ClientVeteranSkill);
+    SV = class<SRVeterancyTypes>(KFPlayerReplicationInfo(PawnOwnerPRI).ClientVeteranSkill);
 
-    if (SV != None)
+    if (SV != none)
     {
         // -- EXPERIENCE BAR -- //
         // (In percent by the looks of it, 0 to 1)
         TempLevel = KFPRI.ClientVeteranSkillLevel;
         MainLevel = TempLevel;
-        if( ClientRep!=None && (TempLevel+1)<ClientRep.MaximumLevel ) {
+        if( ClientRep!=none && (TempLevel+1)<ClientRep.MaximumLevel ) {
             // Draw progress bar.
             bDisplayingProgress = true;
             if( NextLevelTimer<Level.TimeSeconds ) {
@@ -653,7 +653,7 @@ simulated function DrawOldHudItems(Canvas C)
     C.DrawTile(KF2BROverlay.WidgetTexture, MX, MY, 0, 0, KF2BROverlay.WidgetTexture.MaterialUSize(), KF2BROverlay.WidgetTexture.MaterialVSize());
 
     // -- WEAPON NAME -- //
-    if (bDrawWeaponName && OwnerWeaponClass != None)
+    if (bDrawWeaponName && OwnerWeaponClass != none)
     {
         WS = OwnerWeaponClass.default.ItemName;
         C.FontScaleX = WeaponNameScale * SS;
@@ -792,7 +792,7 @@ simulated function DrawOldHudItems(Canvas C)
             C.DrawText(MagAmmo);
 
            // -- RESERVE AMMO -- //
-           if (PawnOwner != None && PawnOwner.Weapon != None)
+           if (PawnOwner != none && PawnOwner.Weapon != none)
            {
                WS = string(int(CurClipsPrimary));
                 C.FontScaleX = ReserveScale * SS;
@@ -817,7 +817,7 @@ simulated function DrawOldHudItems(Canvas C)
         }
 
         // SECONDARY AMMO
-        if ( (OwnerWeapon != none && OwnerWeapon.bHasSecondaryAmmo) || (bSpectating && CurClipsSecondary > 0) || KFMedicGun(OwnerWeapon) != None || ShowSecondary(OwnerWeapon))
+        if ( (OwnerWeapon != none && OwnerWeapon.bHasSecondaryAmmo) || (bSpectating && CurClipsSecondary > 0) || KFMedicGun(OwnerWeapon) != none || ShowSecondary(OwnerWeapon))
         {
             // SECONDARY BASE
             C.SetPos(SX,SY);
@@ -871,7 +871,7 @@ simulated function CalculateAmmo()
     CurAmmoPrimary = 1;
     MagAmmo = 0;
 
-    if ( PawnOwner == None || PawnOwner.Weapon == None || KFWeapon(PawnOwner.Weapon) == none )
+    if ( PawnOwner == none || PawnOwner.Weapon == none || KFWeapon(PawnOwner.Weapon) == none )
         return;
 
     PawnOwner.Weapon.GetAmmoCount(MaxAmmoPrimary,CurAmmoPrimary);
@@ -898,14 +898,14 @@ simulated function DrawWeaponName(Canvas C)
 // Alternate ammo value to show
 simulated function int CalculateAltAmmo()
 {
-    if ( PawnOwner == None || PawnOwner.Weapon == None || KFWeapon(PawnOwner.Weapon) == none )
+    if ( PawnOwner == none || PawnOwner.Weapon == none || KFWeapon(PawnOwner.Weapon) == none )
         return 0;
 
-    if (KFMedicGun(OwnerWeapon) != None)
+    if (KFMedicGun(OwnerWeapon) != none)
         return int(KFMedicGun(OwnerWeapon).ChargeBar() * 100.0);
 
     // Normal secondary ammo
-    if (PawnOwner.Weapon != None)
+    if (PawnOwner.Weapon != none)
         return PawnOwner.Weapon.AmmoAmount(1);
     else
         return 0;
@@ -985,8 +985,8 @@ function DisplayMessages(Canvas C)
     C.FontScaleX = (C.ClipY / 1080.0) * ChatFontScale;
     C.FontScaleY = (C.ClipY / 1080.0) * ChatFontScale;
 
-    // if (Class'KF2GUILabel'.default.bKorean)
-  //       C.Font = Class'FHLang_Core'.default.KoreanFont;
+    // if (class'KF2GUILabel'.default.bKorean)
+  //       C.Font = class'FHLang_Core'.default.KoreanFont;
     // else
         C.Font = KF2Font;
 
@@ -1010,7 +1010,7 @@ function DisplayMessages(Canvas C)
         C.SetPos( XPos, YPos );
         YYL = 0;
         XXL = 0;
-        if( TextMessages[i].PRI!=None )
+        if( TextMessages[i].PRI!=none )
         {
             XL = ScrnScoreBoardClass.Static.DrawCountryNameSE(C,TextMessages[i].PRI,XPos,YPos);
             C.SetPos( XPos+XL, YPos );
@@ -1031,7 +1031,7 @@ function DisplayMessages(Canvas C)
         C.DrawColor = TextMessages[i].TextColor;
         YYL = 0;
         XXL = 0;
-        if( TextMessages[i].PRI!=None )
+        if( TextMessages[i].PRI!=none )
         {
             XL = ScrnScoreBoardClass.Static.DrawCountryNameSE(C,TextMessages[i].PRI,XPos,YPos);
             C.SetPos( XPos+XL, YPos );
@@ -1063,13 +1063,13 @@ simulated function DrawMessage( Canvas C, int i, float PosX, float PosY, out flo
     }
 
     // Not a pickup message
-    if (LocalMessages[i].Message != Class'PickupMessagePlus')
+    if (LocalMessages[i].Message != class'PickupMessagePlus')
     {
         // Is this marco's kill message? Draw a fancy KF2 message
         if (string(LocalMessages[i].Message) ~= "FPPKillMessage.FPPKillMessage"
     || string(LocalMessages[i].Message) ~= "MutKillMessage.NKillsMessage"
     || string(LocalMessages[i].Message) ~= "KFMod.KillsMessage"
-    || LocalMessages[i].Message == Class'KF2KillMessage')
+    || LocalMessages[i].Message == class'KF2KillMessage')
         {
             F = C.Font;
             C.Font = LocalMessages[i].StringFont;
@@ -1081,7 +1081,7 @@ simulated function DrawMessage( Canvas C, int i, float PosX, float PosY, out flo
         }
 
         // Is this a damage message?
-        if (LocalMessages[i].Message == Class'KF2DamageMessage')
+        if (LocalMessages[i].Message == class'KF2DamageMessage')
         {
             DrawDamageMessage(C, i, PosX, PosY, DX, DY);
             return;
@@ -1143,7 +1143,7 @@ simulated function DrawMessage( Canvas C, int i, float PosX, float PosY, out flo
 // Draw a kill message
 simulated function DrawKillMessage( Canvas Canvas, int i, float PosX, float PosY, out float DX, out float DY )
 {
-    local Float SS, TW, TH, FadeValue;
+    local float SS, TW, TH, FadeValue;
     local String S;
     local float DrawX, DrawY, BoxW, BoxH, ISize, Pad;
     local Font F;
@@ -1165,8 +1165,8 @@ simulated function DrawKillMessage( Canvas Canvas, int i, float PosX, float PosY
     S = LocalMessages[i].StringMessage;
 
     F = Canvas.Font;
-    // if (Class'KF2GUILabel'.default.bKorean)
-    //     Canvas.Font = Class'FHLang_Core'.default.KoreanFont;
+    // if (class'KF2GUILabel'.default.bKorean)
+    //     Canvas.Font = class'FHLang_Core'.default.KoreanFont;
     // else
         Canvas.Font = KF2Font;
 
@@ -1175,10 +1175,10 @@ simulated function DrawKillMessage( Canvas Canvas, int i, float PosX, float PosY
     Canvas.FontScaleX = KillScale * SS * KillDampen;
     Canvas.FontScaleY = KillScale * SS * KillDampen;
 
-    if (Class'KF2GUILabel'.default.bKorean)
+    if (class'KF2GUILabel'.default.bKorean)
     {
-        Canvas.FontScaleX *= Class'KF2GUILabel'.default.KoreanScale;
-        Canvas.FontScaleY *= Class'KF2GUILabel'.default.KoreanScale;
+        Canvas.FontScaleX *= class'KF2GUILabel'.default.KoreanScale;
+        Canvas.FontScaleY *= class'KF2GUILabel'.default.KoreanScale;
     }
 
     Canvas.TextSize(S, TW, TH);
@@ -1230,7 +1230,7 @@ simulated function DrawKillMessage( Canvas Canvas, int i, float PosX, float PosY
 // Draw a damage message
 simulated function DrawDamageMessage( Canvas Canvas, int i, float PosX, float PosY, out float DX, out float DY )
 {
-    local Float SS, TW, TH, FadeValue;
+    local float SS, TW, TH, FadeValue;
     local String S;
     local float DrawX, DrawY;
     local Font F;
@@ -1292,8 +1292,8 @@ function  bool UpdateDamageMessage(Object OptionalObject, PlayerReplicationInfo 
             PlayerController(PawnOwner.Controller).ClientMessage("UDM SWITCH:"@string(Switch));
             LocalMessages[i].Switch += Switch;
             LocalMessages[i].DrawColor = class'KF2DamageMessage'.static.GetColor(LocalMessages[i].Switch);
-            LocalMessages[i].LifeTime = class 'KF2DamageMessage'.Default.MessageShowTime;
-            LocalMessages[i].EndOfLife = class 'KF2DamageMessage'.Default.MessageShowTime + Level.TimeSeconds;
+            LocalMessages[i].LifeTime = class 'KF2DamageMessage'.default.MessageShowTime;
+            LocalMessages[i].EndOfLife = class 'KF2DamageMessage'.default.MessageShowTime + Level.TimeSeconds;
             LocalMessages[i].StringMessage = class 'KF2DamageMessage'.static.GetString(LocalMessages[i].Switch,RelatedPRI_1,,OptionalObject);
             return true;
         }
@@ -1310,14 +1310,14 @@ function bool UpdateCustomKillMessage(Object OptionalObject,PlayerReplicationInf
 
     for( i=0; i < ArrayCount(LocalMessages); ++i )
     {
-        if( (LocalMessages[i].Message == class'KF2KillMessage' || LocalMessages[i].Message == Class'KF2KillMessageClassic') &&
+        if( (LocalMessages[i].Message == class'KF2KillMessage' || LocalMessages[i].Message == class'KF2KillMessageClassic') &&
         LocalMessages[i].OptionalObject == OptionalObject &&
         LocalMessages[i].RelatedPRI == RelatedPRI_1 )
         {
             ++LocalMessages[i].Switch;
             LocalMessages[i].DrawColor = class'KF2KillMessage'.static.GetColor(LocalMessages[i].Switch);
-            LocalMessages[i].LifeTime = class 'KF2KillMessage'.Default.MessageShowTime;
-            LocalMessages[i].EndOfLife = class 'KF2KillMessage'.Default.MessageShowTime + Level.TimeSeconds;
+            LocalMessages[i].LifeTime = class 'KF2KillMessage'.default.MessageShowTime;
+            LocalMessages[i].EndOfLife = class 'KF2KillMessage'.default.MessageShowTime + Level.TimeSeconds;
             LocalMessages[i].StringMessage = class 'KF2KillMessage'.static.GetString(LocalMessages[i].Switch,RelatedPRI_1,,OptionalObject);
             return true;
         }
@@ -1343,7 +1343,7 @@ function TriggerBar(string TopText, optional string BottomText, optional Sound T
     else
         WarnStayTime = default.WarnStayTime + WarnSubTime;
 
-    if (TriggerSound != None && PawnOwner.Controller != None)
+    if (TriggerSound != none && PawnOwner.Controller != none)
         PlayerController(PawnOwner.Controller).PlaySound(TriggerSound, SLOT_None, 1.0, true, 500000.0, 1.0, false);
 }
 
@@ -1637,7 +1637,7 @@ function DrawFancyBar(Canvas Canvas)
 //     local FunhouseGameReplicationInfo FGRI;
 
 //     FGRI = FunhouseGameReplicationInfo(Level.GRI);
-//     if (FGRI == None)
+//     if (FGRI == none)
 //         return;
 
 //     Y = 24.0 * (Canvas.ClipY / 1080.0);
@@ -1826,12 +1826,12 @@ simulated function DrawOverheadBar(Canvas C, Pawn P, float ScreenLocX, float Scr
     else
         TheLevel = EnemyPRI.ClientVeteranSkillLevel;
 
-    if (ForcedPerk != None)
+    if (ForcedPerk != none)
         ThePerk = ForcedPerk;
     else
-        ThePerk = Class<SRVeterancyTypes>(EnemyPRI.ClientVeteranSkill);
+        ThePerk = class<SRVeterancyTypes>(EnemyPRI.ClientVeteranSkill);
 
-    if ( ClassIsChildOf(ThePerk,Class'SRVeterancyTypes') )
+    if ( ClassIsChildOf(ThePerk,class'SRVeterancyTypes') )
     {
         S = string(TheLevel) @ ThePerk.default.VeterancyName;
         C.TextSize(S, XL, YL);
@@ -1909,7 +1909,7 @@ simulated function DrawOverheadBar(Canvas C, Pawn P, float ScreenLocX, float Scr
     //--------------------------------
     // PERK
     //--------------------------------
-    if ( ThePerk != None )
+    if ( ThePerk != none )
     {
         TempSize = PlayerPerkSize * SS;
         TempX = LeftX - (4.0*SS) - TempSize;
@@ -1951,7 +1951,7 @@ simulated function bool ShouldDrawFancy() {return true;}
 // Border texture, drawn around portraits
 simulated function Material GetBorderTexture(PlayerReplicationInfo PRI)
 {
-    return None;
+    return none;
 }
 
 simulated function DrawPortraitSE( Canvas Canvas )
@@ -1992,7 +1992,7 @@ simulated function DrawPortraitSE( Canvas Canvas )
     BorderTex = GetBorderTexture(PortraitPRI);
 
     // Draw the border behind the portrait
-    if (BorderTex == None)
+    if (BorderTex == none)
     {
         Canvas.SetPos(StartX - PortraitBorderSize, StartY - PortraitBorderSize);
         Canvas.DrawColor = WhiteColor;
@@ -2010,7 +2010,7 @@ simulated function DrawPortraitSE( Canvas Canvas )
     Canvas.DrawTile(Portrait, PortW, PortH, 0, 0, Portrait.MaterialUSize(), Portrait.MaterialVSize());
 
     // Border! Fancy
-    if (BorderTex != None)
+    if (BorderTex != none)
     {
         BTW = BorderTex.MaterialUSize() * SS * PortraitScale;
         BTH = BorderTex.MaterialVSize() * SS * PortraitScale;
@@ -2197,7 +2197,7 @@ defaultproperties
      KillDampen=0.850000
      KillBG=Texture'KF2HUD.kf2ui_kill'
      SkullIcon=Texture'KF2HUD.kf2ui_skull'
-     bHideWaitMessage=True
+     bHideWaitMessage=true
      WarnPulseLimit=3
      WarnScaleMax=1.250000
      WarnScaleMin=0.700000
