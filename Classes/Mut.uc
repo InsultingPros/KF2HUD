@@ -1,10 +1,10 @@
 class Mut extends ScrnMutator;
 
-function PostBeginPlay()
-{
+function PostBeginPlay() {
     super.PostBeginPlay();
-    if (bDeleteMe)
+    if (bDeleteMe) {
         return;
+    }
 
     // Do not replace TscHUD, FtgHUD, etc.
     if (GetItemName(KF.HUDType) ~= "ScrnHUD") {
@@ -13,11 +13,11 @@ function PostBeginPlay()
     RegisterPostMortem();
 }
 
-defaultproperties
-{
-    VersionNumber=96902
+defaultproperties {
     GroupName="KF-KF2HUD"
     FriendlyName="KF2HUD"
     Description="KF2 HUD."
+
     bAddToServerPackages=true
+    VersionNumber=96902
 }
