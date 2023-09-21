@@ -1,3 +1,8 @@
+/*
+ * Author       : Zedek
+ * Modified by  : Shtoyan, Poosh
+ * Home Repo    : https://github.com/InsultingPros/KF2HUD
+*/
 class Mut extends ScrnMutator;
 
 function PostBeginPlay() {

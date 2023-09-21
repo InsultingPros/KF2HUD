@@ -1,3 +1,8 @@
+/*
+ * Author       : Zedek
+ * Modified by  : dkanus
+ * Home Repo    : https://github.com/InsultingPros/KF2HUD
+*/
 class KF2GUILabel extends GUILabel;
 
 var() byte AlignMode;

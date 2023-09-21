@@ -1,3 +1,7 @@
+/*
+ * Author       : Zedek
+ * Home Repo    : https://github.com/InsultingPros/KF2HUD
+*/
 class KF2DamageMessage extends LocalMessage;
 
 var localized string HPString;

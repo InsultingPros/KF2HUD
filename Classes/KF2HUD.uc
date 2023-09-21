@@ -1,3 +1,8 @@
+/*
+ * Author       : Zedek
+ * Modified by  : Shtoyan, Poosh, dkanus, Joabyy
+ * Home Repo    : https://github.com/InsultingPros/KF2HUD
+*/
 class KF2HUD extends ScrnHUD;
 
 // #exec OBJ LOAD FILE=FPPHUDAssets.ukx
